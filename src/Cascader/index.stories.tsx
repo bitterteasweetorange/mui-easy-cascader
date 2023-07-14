@@ -2,7 +2,7 @@ import { Box, Chip, TextField } from '@mui/material'
 import type { Meta } from '@storybook/react'
 import { useState } from 'react'
 import { Cascader } from '.'
-import { mockNodes } from '../mock'
+import { createTreeNodes } from '../mock'
 
 const meta = {
   title: 'Cascader',
@@ -13,6 +13,7 @@ export default meta
 
 export const Defalut = () => {
   const [select, setSelected] = useState<string | null>('0-1-2-0')
+  const mockNodes = createTreeNodes(6)
   return (
     <Cascader<string>
       nodes={mockNodes}
@@ -25,6 +26,7 @@ export const Defalut = () => {
 export const Search = () => {
   const [select, setSelected] = useState<string | null>('1')
   const [search, setSearch] = useState<string>('')
+  const mockNodes = createTreeNodes(2)
   return (
     <>
       <TextField

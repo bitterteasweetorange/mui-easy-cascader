@@ -1,7 +1,26 @@
 import { KeyboardArrowRight } from '@mui/icons-material'
 import { Box, ListItemText, MenuItem, MenuList, Paper } from '@mui/material'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { Highlight } from 'src/Highlight'
 import { CascaderNode, CascaderProps } from '../types'
+
+type X<T> = T & { pathLabel: string[] }
+function flatChildren<T extends { children?: T[]; label: string }>(
+  nodes: T[],
+  pathLabel: string[],
+): X<T>[] {
+  return nodes.reduce((acc, node) => {
+    const nextPathLabel = [...pathLabel, node.label]
+    if (node.children) {
+      return [
+        ...acc,
+        { ...node, pathLabel: nextPathLabel },
+        ...flatChildren(node.children, nextPathLabel),
+      ]
+    }
+    return [...acc, { ...node, pathLabel: nextPathLabel }]
+  }, [] as X<T>[])
+}
 
 export function Cascader<T>({
   onSelect,
@@ -9,10 +28,44 @@ export function Cascader<T>({
   nodes,
   select,
   render,
+  search,
 }: CascaderProps<T>) {
   const path = useMemo(() => {
     return getPath({ nodes, select, isEqual })
   }, [nodes, select, isEqual])
+
+  const [searchText, setSearchText] = useState(search)
+
+  useEffect(() => {
+    setSearchText(search)
+  }, [search])
+
+  if (searchText) {
+    const flattenNodes = flatChildren<CascaderNode<T>>(nodes, [])
+
+    return (
+      <MenuList>
+        {flattenNodes
+          .filter(
+            (node) =>
+              !!node.pathLabel.find((label) => label.includes(searchText)),
+          )
+          .map((node) => (
+            <MenuItem
+              key={node.key}
+              onClick={() => {
+                onSelect(node.value)
+                setSearchText('')
+              }}
+            >
+              <Highlight search={search}>
+                {node.pathLabel.join(' / ')}
+              </Highlight>
+            </MenuItem>
+          ))}
+      </MenuList>
+    )
+  }
   return (
     <Box display="flex">
       {new Array(path.length + 1).fill(null).map((_, depth) => (
