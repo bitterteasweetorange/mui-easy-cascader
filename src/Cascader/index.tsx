@@ -2,16 +2,18 @@ import { Box, ListItemText, MenuItem, MenuList, Paper } from '@mui/material'
 import { Dispatch, useState } from 'react'
 import { CascaderNode, CascaderProps } from '../types'
 
-function initPath<T>(
-  nodes: CascaderNode<T>[],
-  select: T | null,
-): CascaderNode<T>[] {
+function initPath<T>({
+  nodes,
+  select,
+  isEqual,
+}: Pick<CascaderProps<T>, 'nodes' | 'select' | 'isEqual'>): CascaderNode<T>[] {
+  if (select === null) return []
   const res: CascaderNode<T>[] = []
   nodes.forEach((node) => {
-    if (node.key === select) {
+    if (isEqual ? isEqual(node.value, select) : node.value === select) {
       res.push(node)
     } else if (node.children) {
-      const childPath = initPath(node.children, select)
+      const childPath = initPath({ nodes: node.children, select, isEqual })
       if (childPath.length > 0) {
         res.push(node, ...childPath)
       }
@@ -20,8 +22,10 @@ function initPath<T>(
   return res
 }
 
-export function Cascader<T>({ nodes, select }: CascaderProps<T>) {
-  const [path, setPath] = useState<CascaderNode<T>[]>(initPath(nodes, select))
+export function Cascader<T>({ isEqual, nodes, select }: CascaderProps<T>) {
+  const [path, setPath] = useState<CascaderNode<T>[]>(
+    initPath({ nodes, select, isEqual }),
+  )
   return (
     <Box display="flex">
       {new Array(path.length + 1).fill(null).map((_, depth) => (

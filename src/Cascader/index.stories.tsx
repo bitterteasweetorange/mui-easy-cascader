@@ -48,6 +48,7 @@ type Shape = {
   name: string
   age?: number
 }
+
 export const Render = () => {
   const [select, setSelected] = useState<Shape | null>({
     id: 2,
