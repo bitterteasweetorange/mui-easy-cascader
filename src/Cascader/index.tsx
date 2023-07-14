@@ -1,9 +1,27 @@
-import { Box, MenuItem, MenuList, Paper } from '@mui/material'
+import { Box, ListItemText, MenuItem, MenuList, Paper } from '@mui/material'
 import { Dispatch, useState } from 'react'
 import { CascaderNode, CascaderProps } from '../types'
 
-export function Cascader<T>({ nodes }: CascaderProps<T>) {
-  const [path, setPath] = useState<CascaderNode<T>[]>([])
+function initPath<T>(
+  nodes: CascaderNode<T>[],
+  select: T | null,
+): CascaderNode<T>[] {
+  const res: CascaderNode<T>[] = []
+  nodes.forEach((node) => {
+    if (node.key === select) {
+      res.push(node)
+    } else if (node.children) {
+      const childPath = initPath(node.children, select)
+      if (childPath.length > 0) {
+        res.push(node, ...childPath)
+      }
+    }
+  })
+  return res
+}
+
+export function Cascader<T>({ nodes, select }: CascaderProps<T>) {
+  const [path, setPath] = useState<CascaderNode<T>[]>(initPath(nodes, select))
   return (
     <Box display="flex">
       {new Array(path.length + 1).fill(null).map((_, depth) => (
@@ -43,7 +61,7 @@ function Column<T>({
               setPath([...pre, node])
             }}
           >
-            {node.label}
+            <ListItemText>{node.label}</ListItemText>
           </MenuItem>
         </MenuList>
       ))}

@@ -20,17 +20,6 @@ export interface CascaderProps<T> {
     Label: ReactElement,
     props: { value: T; depth: number; children: CascaderNode<T>[] },
   ) => ReactNode
-  /**
-   * @default 0
-   * expand depth of the nodes,
-   * if expandNodes is set, expandDepth will be ignored
-   */
-  expandDepth?: number
-  /**
-   * expand nodes, overwrites expandDepth
-   * pass key of the nodes to expand
-   */
-  expandNodesKey?: string[]
 }
 
 export interface CascaderNode<T> {

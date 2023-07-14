@@ -12,7 +12,7 @@ const meta = {
 export default meta
 
 export const Defalut = () => {
-  const [select, setSelected] = useState<string | null>('0-0')
+  const [select, setSelected] = useState<string | null>('0-1-2-0')
   return (
     <Cascader<string>
       nodes={mockNodes}
@@ -43,28 +43,6 @@ export const Search = () => {
   )
 }
 
-export const ExpandDepth = () => {
-  const [select, setSelected] = useState<string | null>('0-0')
-  return (
-    <Cascader<string>
-      nodes={mockNodes}
-      select={select}
-      onSelect={setSelected}
-      expandDepth={1}
-    />
-  )
-}
-export const ExpandNodes = () => {
-  const [select, setSelected] = useState<string | null>('0-0')
-  return (
-    <Cascader<string>
-      nodes={mockNodes}
-      select={select}
-      onSelect={setSelected}
-      expandNodesKey={['1']}
-    />
-  )
-}
 type Shape = {
   id: number
   name: string
