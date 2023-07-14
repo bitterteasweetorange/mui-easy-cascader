@@ -19,8 +19,7 @@
     "build": "rm -rf dist/ && rollup -c  --environment BUILD:production --bundleConfigAsCjs",
     "build-storybook": "storybook build",
     "dev": "rm -rf dist/ && rollup -c -w",
-    "storybook": "storybook dev -p 6006",
-    "test": "pnpm exec playwright test"
+    "storybook": "storybook dev -p 6006"
   },
   "author": "orange",
   "description": "cascader based on MUI",
@@ -29,7 +28,6 @@
     "MUI",
     "typescript",
     "react",
-    "playwright",
     "storybook"
   ],
   "license": "MIT",
@@ -41,7 +39,6 @@
     "@babel/preset-react": "^7.22.3",
     "@babel/preset-typescript": "^7.21.5",
     "@emotion/css": "^11.11.0",
-    "@playwright/test": "^1.35.1",
     "@rollup/plugin-babel": "^6.0.3",
     "@rollup/plugin-commonjs": "^25.0.0",
     "@rollup/plugin-node-resolve": "^15.1.0",
