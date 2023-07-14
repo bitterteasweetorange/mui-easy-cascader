@@ -8,6 +8,7 @@ export function Cascader<T>({
   isEqual,
   nodes,
   select,
+  render,
 }: CascaderProps<T>) {
   const path = useMemo(() => {
     return getPath({ nodes, select, isEqual })
@@ -23,6 +24,7 @@ export function Cascader<T>({
           }
           path={path}
           onSelect={onSelect}
+          render={render}
         />
       ))}
     </Box>
@@ -34,12 +36,12 @@ function Column<T>({
   depth,
   path,
   onSelect,
+  render,
 }: {
   currentDepthNodes: CascaderNode<T>[]
   depth: number
   path: CascaderNode<T>[]
-  onSelect: (value: T | null) => void
-}) {
+} & Pick<CascaderProps<T>, 'render' | 'onSelect'>) {
   return (
     <Paper>
       {currentDepthNodes.map((node) => (
@@ -50,7 +52,15 @@ function Column<T>({
               onSelect(node.value)
             }}
           >
-            <ListItemText>{node.label}</ListItemText>
+            {render ? (
+              render?.(node.label, {
+                depth,
+                children: node.children,
+                value: node.value,
+              })
+            ) : (
+              <ListItemText> {node.label}</ListItemText>
+            )}
             {node.children && (
               <KeyboardArrowRight
                 color={path[depth] === node ? 'primary' : 'disabled'}

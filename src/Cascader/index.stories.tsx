@@ -28,6 +28,7 @@ export const Search = () => {
   return (
     <>
       <TextField
+        label="search"
         value={search}
         onChange={(e) => {
           setSearch(e.target.value)
@@ -61,7 +62,11 @@ export const Render = () => {
         {
           key: '0',
           label: '0',
-          value: { id: 0, name: '0' },
+          value: {
+            age: 33,
+            id: 0,
+            name: '0',
+          },
           children: [
             {
               key: '0-0',
@@ -83,7 +88,6 @@ export const Render = () => {
           key: '1',
           label: '1',
           value: {
-            age: 33,
             id: 3,
             name: '1',
           },
@@ -93,12 +97,20 @@ export const Render = () => {
       onSelect={setSelected}
       isEqual={(a, b) => a.id === b.id}
       render={(Label, { value }) => (
-        <Box>
+        <Box
+          sx={{
+            justifyContent: 'center',
+            display: 'flex',
+            gap: 1,
+          }}
+        >
           {Label}
           {value.age && (
             <Chip
+              variant="outlined"
+              size="small"
               label={value.age}
-              color="primary"
+              color={value.age > 18 ? 'success' : 'error'}
             />
           )}
         </Box>

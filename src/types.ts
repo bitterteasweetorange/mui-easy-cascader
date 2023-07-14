@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode } from 'react'
+import { ReactNode } from 'react'
 
 export interface CascaderProps<T> {
   nodes: CascaderNode<T>[]
@@ -17,8 +17,8 @@ export interface CascaderProps<T> {
    * Label is Higlight component
    */
   render?: (
-    Label: ReactElement,
-    props: { value: T; depth: number; children: CascaderNode<T>[] },
+    Label: ReactNode,
+    props: { value: T; depth: number; children?: CascaderNode<T>[] },
   ) => ReactNode
 }
 
