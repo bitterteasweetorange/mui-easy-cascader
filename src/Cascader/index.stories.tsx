@@ -79,6 +79,15 @@ export const Render = () => {
             },
           ],
         },
+        {
+          key: '1',
+          label: '1',
+          value: {
+            age: 33,
+            id: 3,
+            name: '1',
+          },
+        },
       ]}
       select={select}
       onSelect={setSelected}

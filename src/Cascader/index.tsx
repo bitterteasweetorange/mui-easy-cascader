@@ -1,12 +1,17 @@
-import { ArrowLeft, ArrowRight } from '@mui/icons-material'
+import { KeyboardArrowRight } from '@mui/icons-material'
 import { Box, ListItemText, MenuItem, MenuList, Paper } from '@mui/material'
-import { Dispatch, useState } from 'react'
+import { useMemo } from 'react'
 import { CascaderNode, CascaderProps } from '../types'
 
-export function Cascader<T>({ isEqual, nodes, select }: CascaderProps<T>) {
-  const [path, setPath] = useState<CascaderNode<T>[]>(
-    initPath({ nodes, select, isEqual }),
-  )
+export function Cascader<T>({
+  onSelect,
+  isEqual,
+  nodes,
+  select,
+}: CascaderProps<T>) {
+  const path = useMemo(() => {
+    return getPath({ nodes, select, isEqual })
+  }, [nodes, select, isEqual])
   return (
     <Box display="flex">
       {new Array(path.length + 1).fill(null).map((_, depth) => (
@@ -17,7 +22,7 @@ export function Cascader<T>({ isEqual, nodes, select }: CascaderProps<T>) {
             depth === 0 ? nodes : path[depth - 1].children || []
           }
           path={path}
-          setPath={setPath}
+          onSelect={onSelect}
         />
       ))}
     </Box>
@@ -28,12 +33,12 @@ function Column<T>({
   currentDepthNodes,
   depth,
   path,
-  setPath,
+  onSelect,
 }: {
   currentDepthNodes: CascaderNode<T>[]
   depth: number
   path: CascaderNode<T>[]
-  setPath: Dispatch<React.SetStateAction<CascaderNode<T>[]>>
+  onSelect: (value: T | null) => void
 }) {
   return (
     <Paper>
@@ -42,13 +47,12 @@ function Column<T>({
           <MenuItem
             selected={path[depth] === node}
             onClick={() => {
-              const pre = path.slice(0, depth)
-              setPath([...pre, node])
+              onSelect(node.value)
             }}
           >
             <ListItemText>{node.label}</ListItemText>
             {node.children && (
-              <ArrowRight
+              <KeyboardArrowRight
                 color={path[depth] === node ? 'primary' : 'disabled'}
               />
             )}
@@ -59,7 +63,7 @@ function Column<T>({
   )
 }
 
-function initPath<T>({
+function getPath<T>({
   nodes,
   select,
   isEqual,
@@ -70,7 +74,7 @@ function initPath<T>({
     if (isEqual ? isEqual(node.value, select) : node.value === select) {
       res.push(node)
     } else if (node.children) {
-      const childPath = initPath({ nodes: node.children, select, isEqual })
+      const childPath = getPath({ nodes: node.children, select, isEqual })
       if (childPath.length > 0) {
         res.push(node, ...childPath)
       }
