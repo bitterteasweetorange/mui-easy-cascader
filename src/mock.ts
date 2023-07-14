@@ -10,4 +10,4 @@ function createTreeNodes(depth: number, prefix = ''): CascaderNode<string>[] {
   }))
 }
 
-export const mockNodes = createTreeNodes(3)
+export const mockNodes = createTreeNodes(6)
