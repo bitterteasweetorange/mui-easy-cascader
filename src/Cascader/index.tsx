@@ -1,26 +1,7 @@
+import { ArrowLeft, ArrowRight } from '@mui/icons-material'
 import { Box, ListItemText, MenuItem, MenuList, Paper } from '@mui/material'
 import { Dispatch, useState } from 'react'
 import { CascaderNode, CascaderProps } from '../types'
-
-function initPath<T>({
-  nodes,
-  select,
-  isEqual,
-}: Pick<CascaderProps<T>, 'nodes' | 'select' | 'isEqual'>): CascaderNode<T>[] {
-  if (select === null) return []
-  const res: CascaderNode<T>[] = []
-  nodes.forEach((node) => {
-    if (isEqual ? isEqual(node.value, select) : node.value === select) {
-      res.push(node)
-    } else if (node.children) {
-      const childPath = initPath({ nodes: node.children, select, isEqual })
-      if (childPath.length > 0) {
-        res.push(node, ...childPath)
-      }
-    }
-  })
-  return res
-}
 
 export function Cascader<T>({ isEqual, nodes, select }: CascaderProps<T>) {
   const [path, setPath] = useState<CascaderNode<T>[]>(
@@ -66,9 +47,34 @@ function Column<T>({
             }}
           >
             <ListItemText>{node.label}</ListItemText>
+            {node.children && (
+              <ArrowRight
+                color={path[depth] === node ? 'primary' : 'disabled'}
+              />
+            )}
           </MenuItem>
         </MenuList>
       ))}
     </Paper>
   )
+}
+
+function initPath<T>({
+  nodes,
+  select,
+  isEqual,
+}: Pick<CascaderProps<T>, 'nodes' | 'select' | 'isEqual'>): CascaderNode<T>[] {
+  if (select === null) return []
+  const res: CascaderNode<T>[] = []
+  nodes.forEach((node) => {
+    if (isEqual ? isEqual(node.value, select) : node.value === select) {
+      res.push(node)
+    } else if (node.children) {
+      const childPath = initPath({ nodes: node.children, select, isEqual })
+      if (childPath.length > 0) {
+        res.push(node, ...childPath)
+      }
+    }
+  })
+  return res
 }
