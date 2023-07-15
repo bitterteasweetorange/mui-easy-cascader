@@ -17,8 +17,8 @@ export const Defalut = () => {
   return (
     <Cascader<string>
       nodes={mockNodes}
-      select={select}
-      onSelect={setSelected}
+      value={select}
+      onChange={setSelected}
     />
   )
 }
@@ -38,8 +38,8 @@ export const Search = () => {
       />
       <Cascader<string>
         nodes={mockNodes}
-        select={select}
-        onSelect={setSelected}
+        value={select}
+        onChange={setSelected}
         search={search}
       />
     </>
@@ -95,8 +95,8 @@ export const Render = () => {
           },
         },
       ]}
-      select={select}
-      onSelect={setSelected}
+      value={select}
+      onChange={setSelected}
       isEqual={(a, b) => a.id === b.id}
       render={(Label, { value }) => (
         <Box

@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react'
 import { Highlight, HighlightProps } from '.'
 
 const meta = {
-  title: 'Highlight',
+  title: 'component/Highlight',
   component: Highlight,
 } satisfies Meta<typeof Highlight>
 

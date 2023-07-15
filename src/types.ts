@@ -1,9 +1,14 @@
 import { ReactNode } from 'react'
 
+export type CascaderInputProps<T> = Pick<
+  CascaderProps<T>,
+  'value' | 'onChange' | 'nodes' | 'render' | 'isEqual'
+>
+
 export interface CascaderProps<T> {
   nodes: CascaderNode<T>[]
-  select: T | null
-  onSelect: (value: T | null) => void
+  value: T | null
+  onChange: (value: T | null) => void
   /**
    * filter / hightlight the nodes by search text
    */
