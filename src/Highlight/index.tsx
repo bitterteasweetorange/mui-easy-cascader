@@ -1,4 +1,4 @@
-import { styled } from '@mui/material'
+import { Box, styled } from '@mui/material'
 import { debounceTime, map, skipWhile } from 'rxjs'
 import { useObservable } from 'rxjs-hooks'
 
@@ -30,7 +30,7 @@ export function Highlight(props: HighlightProps) {
   const stringArray = children.split(new RegExp(`(${search})`, 'g'))
 
   return (
-    <>
+    <Box>
       {stringArray.map((string, index) =>
         string === search ? (
           <StyledMark
@@ -43,6 +43,6 @@ export function Highlight(props: HighlightProps) {
           string
         ),
       )}
-    </>
+    </Box>
   )
 }

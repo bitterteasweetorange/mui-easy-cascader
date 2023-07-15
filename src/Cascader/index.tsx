@@ -1,6 +1,13 @@
 import { KeyboardArrowRight } from '@mui/icons-material'
-import { Box, ListItemText, MenuItem, MenuList, Paper } from '@mui/material'
-import { useEffect, useMemo, useState } from 'react'
+import {
+  Box,
+  ListItemText,
+  MenuItem,
+  MenuList,
+  Paper,
+  Typography,
+} from '@mui/material'
+import { Fragment, useEffect, useMemo, useState } from 'react'
 import { Highlight } from 'src/Highlight'
 import { CascaderNode, CascaderProps } from '../types'
 
@@ -61,9 +68,26 @@ export function Cascader<T>({
                   setSearchText('')
                 }}
               >
-                <Highlight search={search}>
-                  {node.pathLabel.join(' / ')}
-                </Highlight>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    gap: 1,
+                  }}
+                >
+                  {node.pathLabel.map((label, index) => (
+                    <Fragment key={index}>
+                      <Highlight search={search}>{label}</Highlight>
+                      {index !== node.pathLabel.length - 1 && (
+                        <Typography
+                          component="div"
+                          color="text.disabled"
+                        >
+                          {'/'}
+                        </Typography>
+                      )}
+                    </Fragment>
+                  ))}
+                </Box>
               </MenuItem>
             ))}
         </MenuList>
