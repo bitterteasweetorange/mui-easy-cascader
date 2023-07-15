@@ -39,9 +39,13 @@ export function CascaderInput<T>(props: CascaderInputProps<T>) {
             nodes={nodes}
             isEqual={isEqual}
             value={value}
-            onChange={(nextSelect) => {
-              onChange(nextSelect)
-              inputRef.current?.focus()
+            onChange={(nextSelect, isLeaf) => {
+              onChange(nextSelect, isLeaf)
+              if (isLeaf) {
+                setOpen(false)
+              } else {
+                inputRef.current?.focus()
+              }
             }}
             search={search}
           />

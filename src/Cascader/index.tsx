@@ -54,7 +54,7 @@ export function Cascader<T>({
             <MenuItem
               key={node.key}
               onClick={() => {
-                onChange(node.value)
+                onChange(node.value, !node.children)
                 setSearchText('')
               }}
             >
@@ -97,31 +97,32 @@ function Column<T>({
 } & Pick<CascaderProps<T>, 'render' | 'onChange'>) {
   return (
     <Paper>
-      {currentDepthNodes.map((node) => (
-        <MenuList key={node.key}>
-          <MenuItem
-            selected={path[depth] === node}
-            onClick={() => {
-              onChange(node.value)
-            }}
-          >
-            {render ? (
-              render?.(node.label, {
-                depth,
-                children: node.children,
-                value: node.value,
-              })
-            ) : (
-              <ListItemText> {node.label}</ListItemText>
-            )}
-            {node.children && (
-              <KeyboardArrowRight
-                color={path[depth] === node ? 'primary' : 'disabled'}
-              />
-            )}
-          </MenuItem>
-        </MenuList>
-      ))}
+      {currentDepthNodes.map((node) => {
+        const selected = path[depth] === node
+        return (
+          <MenuList key={node.key}>
+            <MenuItem
+              selected={selected}
+              onClick={() => {
+                onChange(node.value, !node.children)
+              }}
+            >
+              {render ? (
+                render?.(node.label, {
+                  depth,
+                  children: node.children,
+                  value: node.value,
+                })
+              ) : (
+                <ListItemText>{node.label}</ListItemText>
+              )}
+              {node.children && (
+                <KeyboardArrowRight color={selected ? 'primary' : 'disabled'} />
+              )}
+            </MenuItem>
+          </MenuList>
+        )
+      })}
     </Paper>
   )
 }

@@ -8,7 +8,7 @@ export type CascaderInputProps<T> = Pick<
 export interface CascaderProps<T> {
   nodes: CascaderNode<T>[]
   value: T | null
-  onChange: (value: T | null) => void
+  onChange: (value: T | null, isLeaf: boolean) => void
   /**
    * filter / hightlight the nodes by search text
    */
