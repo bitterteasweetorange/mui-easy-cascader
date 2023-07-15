@@ -1,8 +1,9 @@
 import { Box, Chip, TextField } from '@mui/material'
 import type { Meta } from '@storybook/react'
 import { useState } from 'react'
+import { createCascaderNodes } from 'src/utils/createCascaderNodes'
 import { Cascader } from '.'
-import { createTreeNodes } from '../mock'
+import { objectNodes } from '../mock'
 
 const meta = {
   title: 'Cascader',
@@ -13,7 +14,7 @@ export default meta
 
 export const Defalut = () => {
   const [select, setSelected] = useState<string | null>('0-1-2-0')
-  const mockNodes = createTreeNodes(6)
+  const mockNodes = createCascaderNodes(6)
   return (
     <Cascader<string>
       nodes={mockNodes}
@@ -26,7 +27,7 @@ export const Defalut = () => {
 export const Search = () => {
   const [select, setSelected] = useState<string | null>('1')
   const [search, setSearch] = useState<string>('')
-  const mockNodes = createTreeNodes(2)
+  const mockNodes = createCascaderNodes(2)
   return (
     <>
       <TextField
@@ -60,41 +61,7 @@ export const RenderNode = () => {
   })
   return (
     <Cascader<Shape>
-      nodes={[
-        {
-          key: '0',
-          label: '0',
-          value: {
-            age: 33,
-            id: 0,
-            name: '0',
-          },
-          children: [
-            {
-              key: '0-0',
-              label: '0-0',
-              value: { id: 1, name: '0-0' },
-            },
-            {
-              key: '0-1',
-              label: '0-1',
-              value: {
-                age: 12,
-                id: 2,
-                name: '0-1',
-              },
-            },
-          ],
-        },
-        {
-          key: '1',
-          label: '1',
-          value: {
-            id: 3,
-            name: '1',
-          },
-        },
-      ]}
+      nodes={objectNodes}
       selected={select}
       onSelect={setSelected}
       isEqual={(a, b) => a.id === b.id}

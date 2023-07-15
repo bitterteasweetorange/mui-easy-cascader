@@ -34,7 +34,7 @@ export interface CascaderNode<T> {
   /**
    * unique key of the node
    */
-  key: string
+  key: string | number
   /**
    * value of the node
    */

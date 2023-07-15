@@ -1,7 +1,7 @@
 import type { Meta } from '@storybook/react'
 import { useState } from 'react'
+import { createCascaderNodes } from 'src/utils/createCascaderNodes'
 import { CascaderInput } from '.'
-import { createTreeNodes } from '../mock'
 
 const meta = {
   title: 'Input/CascaderInput',
@@ -12,7 +12,7 @@ export default meta
 
 export const Defalut = () => {
   const [value, onChange] = useState<string | null>('0-0-0')
-  const mockNodes = createTreeNodes(3)
+  const mockNodes = createCascaderNodes(3)
   return (
     <CascaderInput<string>
       nodes={mockNodes}
