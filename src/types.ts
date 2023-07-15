@@ -2,7 +2,7 @@ import { ReactNode } from 'react'
 
 export type CascaderInputProps<T> = Pick<
   CascaderProps<T>,
-  'nodes' | 'renderNode' | 'isEqual'
+  'nodes' | 'renderNode' | 'isEqual' | 'getNodeLabel'
 > & {
   value: T | null
   onChange: (value: T | null) => void
@@ -28,21 +28,19 @@ export interface CascaderProps<T> {
     Label: ReactNode,
     props: { value: T; depth: number; children?: CascaderNode<T>[] },
   ) => ReactNode
+  /**
+   * get the label of the node for hightlight and filter
+   */
+  getNodeLabel?: (value: T) => string
 }
 
 export interface CascaderNode<T> {
   /**
-   * unique key of the node
-   */
-  key: string | number
-  /**
-   * value of the node
+   * value of the node,
+   * if value is primitive type, it will be used as label
+   * if value is object, label will be used as label, or use getNodeLabel to get the label
    */
   value: T
-  /**
-   * label of the node, highlight will be applied to matched characters
-   */
-  label: string
   /**
    * nest children nodes
    */

@@ -10,6 +10,7 @@ import {
 import { Fragment, useEffect, useMemo, useState } from 'react'
 import { Highlight } from 'src/Highlight'
 import { flatNodes } from 'src/utils/flatNodes'
+import { getLabel } from 'src/utils/getNodeLabel'
 import { CascaderNode, CascaderProps } from '../types'
 
 export function Cascader<T>({
@@ -19,6 +20,7 @@ export function Cascader<T>({
   selected: value,
   renderNode: render,
   search,
+  getNodeLabel,
 }: CascaderProps<T>) {
   const path = useMemo(() => {
     return getPath({ nodes, selected: value, isEqual })
@@ -31,23 +33,22 @@ export function Cascader<T>({
   }, [search])
 
   if (searchText) {
-    const flattenNodes = flatNodes<CascaderNode<T>>(nodes, [])
+    const listData = flatNodes<T>(nodes, [], getNodeLabel)
 
     return (
       <Paper>
         <MenuList>
-          {flattenNodes
-            // filter leaf node
-            .filter((node) => !node.children)
+          {listData
+            .filter((item) => item.isLeaf)
             .filter(
-              (node) =>
-                !!node.pathLabel.find((label) => label.includes(searchText)),
+              (item) =>
+                !!item.pathLabel.find((label) => label.includes(searchText)),
             )
-            .map((node) => (
+            .map((item, index) => (
               <MenuItem
-                key={node.key}
+                key={index}
                 onClick={() => {
-                  onChange(node.value, !node.children)
+                  onChange(item.value, item.isLeaf)
                   setSearchText('')
                 }}
               >
@@ -57,10 +58,10 @@ export function Cascader<T>({
                     gap: 1,
                   }}
                 >
-                  {node.pathLabel.map((label, index) => (
+                  {item.pathLabel.map((label, index) => (
                     <Fragment key={index}>
                       <Highlight search={search}>{label}</Highlight>
-                      {index !== node.pathLabel.length - 1 && (
+                      {index !== item.pathLabel.length - 1 && (
                         <Typography
                           component="div"
                           color="text.disabled"
@@ -89,6 +90,7 @@ export function Cascader<T>({
           path={path}
           onSelect={onChange}
           renderNode={render}
+          getNodeLabel={getNodeLabel}
         />
       ))}
     </Box>
@@ -99,33 +101,36 @@ function Column<T>({
   currentDepthNodes,
   depth,
   path,
-  onSelect: onChange,
+  onSelect,
   renderNode: render,
+  getNodeLabel,
 }: {
   currentDepthNodes: CascaderNode<T>[]
   depth: number
   path: CascaderNode<T>[]
-} & Pick<CascaderProps<T>, 'renderNode' | 'onSelect'>) {
+} & Pick<CascaderProps<T>, 'renderNode' | 'onSelect' | 'getNodeLabel'>) {
   return (
     <Paper>
-      {currentDepthNodes.map((node) => {
+      {currentDepthNodes.map((node, index) => {
         const selected = path[depth] === node
         return (
-          <MenuList key={node.key}>
+          <MenuList key={index}>
             <MenuItem
               selected={selected}
               onClick={() => {
-                onChange(node.value, !node.children)
+                onSelect(node.value, !node.children)
               }}
             >
               {render ? (
-                render?.(node.label, {
+                render?.(getLabel(node.value, getNodeLabel), {
                   depth,
                   children: node.children,
                   value: node.value,
                 })
               ) : (
-                <ListItemText>{node.label}</ListItemText>
+                <ListItemText>
+                  {getLabel(node.value, getNodeLabel)}
+                </ListItemText>
               )}
               {node.children && (
                 <KeyboardArrowRight color={selected ? 'primary' : 'disabled'} />

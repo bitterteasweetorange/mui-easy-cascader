@@ -1,17 +1,40 @@
-type Result<T> = T & { pathLabel: string[] }
-export function flatNodes<T extends { children?: T[]; label: string }>(
-  nodes: T[],
+import { CascaderNode } from 'src/types'
+import { getLabel } from './getNodeLabel'
+
+type Result<T> = {
+  pathLabel: string[]
+  value: T
+  isLeaf: boolean
+}
+
+export function flatNodes<T>(
+  nodes: CascaderNode<T>[],
   pathLabel: string[],
+  getNodeLabel?: (value: T) => string,
 ): Result<T>[] {
   return nodes.reduce((acc, node) => {
-    const nextPathLabel = [...pathLabel, node.label]
+    const currentNodeLabel = getLabel(node.value, getNodeLabel)
+    const nextPathLabel = [...pathLabel, currentNodeLabel]
+    const { value } = node
+
     if (node.children) {
       return [
         ...acc,
-        { ...node, pathLabel: nextPathLabel },
-        ...flatNodes(node.children, nextPathLabel),
+        {
+          value,
+          pathLabel: nextPathLabel,
+          isLeaf: false,
+        },
+        ...flatNodes(node.children, nextPathLabel, getNodeLabel),
       ]
     }
-    return [...acc, { ...node, pathLabel: nextPathLabel }]
+    return [
+      ...acc,
+      {
+        value,
+        pathLabel: nextPathLabel,
+        isLeaf: true,
+      },
+    ]
   }, [] as Result<T>[])
 }

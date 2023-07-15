@@ -1,6 +1,7 @@
+import { Box, Chip } from '@mui/material'
 import type { Meta } from '@storybook/react'
 import { useState } from 'react'
-import { createCascaderNodes } from 'src/utils/createCascaderNodes'
+import { MockObject, mockObjectNodes } from 'src/mock'
 import { CascaderInput } from '.'
 
 const meta = {
@@ -11,13 +12,39 @@ const meta = {
 export default meta
 
 export const Defalut = () => {
-  const [value, onChange] = useState<string | null>('0-0-0')
-  const mockNodes = createCascaderNodes(3)
+  const [value, onChange] = useState<MockObject | null>({
+    id: 2,
+    label: 'children-1',
+    age: 10,
+  })
   return (
-    <CascaderInput<string>
-      nodes={mockNodes}
+    <CascaderInput<MockObject>
+      nodes={mockObjectNodes}
+      isEqual={(a, b) => a.id === b.id}
+      getNodeLabel={(node) =>
+        `${node.label}${node.age ? '(' + node.age + ')' : ''}`
+      }
       value={value}
       onChange={onChange}
+      renderNode={(Label, { value }) => (
+        <Box
+          sx={{
+            justifyContent: 'center',
+            display: 'flex',
+            gap: 1,
+          }}
+        >
+          {Label}
+          {value.age && (
+            <Chip
+              variant="outlined"
+              size="small"
+              label={value.age}
+              color={value.age > 18 ? 'success' : 'error'}
+            />
+          )}
+        </Box>
+      )}
     />
   )
 }

@@ -1,41 +1,34 @@
 import { CascaderNode } from './types'
 
-export const objectNodes: CascaderNode<{
+export type MockObject = {
   id: number
-  name: string
+  label: string
   age?: number
-}>[] = [
-    {
-      key: '0',
-      label: '0',
-      value: {
-        age: 33,
-        id: 0,
-        name: '0',
-      },
-      children: [
-        {
-          key: '0-0',
-          label: '0-0',
-          value: { id: 1, name: '0-0' },
-        },
-        {
-          key: '0-1',
-          label: '0-1',
-          value: {
-            age: 12,
-            id: 2,
-            name: '0-1',
-          },
-        },
-      ],
+}
+export const mockObjectNodes: CascaderNode<MockObject>[] = [
+  {
+    value: {
+      id: 0,
+      label: 'parent-0',
+      age: 100,
     },
-    {
-      key: '1',
-      label: '1',
-      value: {
-        id: 3,
-        name: '1',
+    children: [
+      {
+        value: { id: 1, label: 'children-0' },
       },
+      {
+        value: {
+          id: 2,
+          label: 'children-1',
+          age: 10,
+        },
+      },
+    ],
+  },
+  {
+    value: {
+      id: 3,
+      label: 'parent-1',
     },
-  ]
+  },
+]

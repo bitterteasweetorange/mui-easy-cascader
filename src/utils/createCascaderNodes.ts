@@ -5,8 +5,6 @@ export function createCascaderNodes(
   prefix = '',
 ): CascaderNode<string>[] {
   return new Array(3).fill(null).map((_, index) => ({
-    key: `${prefix}${index}`,
-    label: `${prefix}${index}`,
     value: `${prefix}${index}`,
     children:
       depth > 1

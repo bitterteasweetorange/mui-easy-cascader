@@ -3,7 +3,7 @@ import type { Meta } from '@storybook/react'
 import { useState } from 'react'
 import { createCascaderNodes } from 'src/utils/createCascaderNodes'
 import { Cascader } from '.'
-import { objectNodes } from '../mock'
+import { MockObject, mockObjectNodes } from '../mock'
 
 const meta = {
   title: 'Cascader',
@@ -47,21 +47,53 @@ export const Search = () => {
   )
 }
 
-type Shape = {
-  id: number
-  name: string
-  age?: number
+export const ObjectNode = () => {
+  const [select, setSelected] = useState<MockObject | null>({
+    id: 2,
+    label: 'children-1',
+    age: 10,
+  })
+  return (
+    <Cascader<MockObject>
+      nodes={mockObjectNodes}
+      selected={select}
+      onSelect={setSelected}
+      isEqual={(a, b) => a.id === b.id}
+    />
+  )
+}
+
+export const GetNodeLabel = () => {
+  const [select, setSelected] = useState<MockObject | null>(null)
+  const [search, setSearch] = useState<string>('')
+  return (
+    <>
+      <TextField
+        label="search"
+        value={search}
+        onChange={(e) => {
+          setSearch(e.target.value)
+        }}
+      />
+      <Cascader<MockObject>
+        search={search}
+        nodes={mockObjectNodes}
+        selected={select}
+        onSelect={setSelected}
+        isEqual={(a, b) => a.id === b.id}
+        getNodeLabel={(node) =>
+          `${node.label}${node.age ? '(' + node.age + ')' : ''}`
+        }
+      />
+    </>
+  )
 }
 
 export const RenderNode = () => {
-  const [select, setSelected] = useState<Shape | null>({
-    id: 2,
-    name: '0-1',
-    age: 12,
-  })
+  const [select, setSelected] = useState<MockObject | null>(null)
   return (
-    <Cascader<Shape>
-      nodes={objectNodes}
+    <Cascader<MockObject>
+      nodes={mockObjectNodes}
       selected={select}
       onSelect={setSelected}
       isEqual={(a, b) => a.id === b.id}

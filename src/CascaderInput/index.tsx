@@ -2,6 +2,7 @@ import { Box, TextField } from '@mui/material'
 import { RefObject, useRef, useState } from 'react'
 import { Cascader } from 'src/Cascader'
 import { EasyPopper } from 'src/EasyPopper'
+import { getLabel } from 'src/utils/getNodeLabel'
 import { CascaderInputProps } from '../types'
 
 export function CascaderInput<T>(props: CascaderInputProps<T>) {
@@ -10,9 +11,16 @@ export function CascaderInput<T>(props: CascaderInputProps<T>) {
 
   const [focused, setFocused] = useState<boolean>(false)
   const anchorRef = useRef<HTMLDivElement>(null)
-  const { value, onChange, nodes, renderNode: render, isEqual } = props
+  const {
+    value,
+    onChange,
+    getNodeLabel,
+    nodes,
+    renderNode: render,
+    isEqual,
+  } = props
 
-  const [selected, onSelect] = useState(value)
+  const [selected, onSelect] = useState<T | null>(value)
 
   return (
     <>
@@ -26,8 +34,16 @@ export function CascaderInput<T>(props: CascaderInputProps<T>) {
           onSelect(value)
         }}
         ref={anchorRef}
-        placeholder={isSearch ? (value as string) : ''}
-        value={isSearch ? search : value}
+        placeholder={
+          isSearch ? (value === null ? '' : getLabel(value, getNodeLabel)) : ''
+        }
+        value={
+          isSearch
+            ? search
+            : value === null
+              ? ''
+              : getLabel(value, getNodeLabel)
+        }
         onChange={(e) => {
           setSearch(e.target.value)
         }}
@@ -43,6 +59,7 @@ export function CascaderInput<T>(props: CascaderInputProps<T>) {
       >
         <Box>
           <Cascader<T>
+            getNodeLabel={getNodeLabel}
             renderNode={render}
             nodes={nodes}
             isEqual={isEqual}
