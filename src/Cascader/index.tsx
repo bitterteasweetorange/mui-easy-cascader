@@ -9,25 +9,8 @@ import {
 } from '@mui/material'
 import { Fragment, useEffect, useMemo, useState } from 'react'
 import { Highlight } from 'src/Highlight'
+import { flatNodes } from 'src/utils/flatNodes'
 import { CascaderNode, CascaderProps } from '../types'
-
-type X<T> = T & { pathLabel: string[] }
-function flatNodes<T extends { children?: T[]; label: string }>(
-  nodes: T[],
-  pathLabel: string[],
-): X<T>[] {
-  return nodes.reduce((acc, node) => {
-    const nextPathLabel = [...pathLabel, node.label]
-    if (node.children) {
-      return [
-        ...acc,
-        { ...node, pathLabel: nextPathLabel },
-        ...flatNodes(node.children, nextPathLabel),
-      ]
-    }
-    return [...acc, { ...node, pathLabel: nextPathLabel }]
-  }, [] as X<T>[])
-}
 
 export function Cascader<T>({
   onSelect: onChange,
