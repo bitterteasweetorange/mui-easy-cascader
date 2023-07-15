@@ -11,13 +11,13 @@ const meta = {
 export default meta
 
 export const Defalut = () => {
-  const [select, setSelected] = useState<string | null>('0-1')
-  const mockNodes = createTreeNodes(4)
+  const [value, onChange] = useState<string | null>('0-0-0')
+  const mockNodes = createTreeNodes(3)
   return (
     <CascaderInput<string>
       nodes={mockNodes}
-      value={select}
-      onChange={setSelected}
+      value={value}
+      onChange={onChange}
     />
   )
 }

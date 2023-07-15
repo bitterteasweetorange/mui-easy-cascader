@@ -1,16 +1,16 @@
 import { Box, ClickAwayListener, Grow, Popper } from '@mui/material'
-import React, { Dispatch, SetStateAction, type ReactElement } from 'react'
+import React, { type ReactElement } from 'react'
 
 export type EasyPopperProps = {
   children: ReactElement
   anchorRef: React.RefObject<HTMLButtonElement>
   open: boolean
-  setOpen: Dispatch<SetStateAction<boolean>>
+  onClose: () => void
 }
 export function EasyPopper({
   children,
   anchorRef,
-  setOpen,
+  onClose,
   open,
 }: EasyPopperProps) {
   const handleClose = (event: Event | React.SyntheticEvent) => {
@@ -21,7 +21,7 @@ export function EasyPopper({
       return
     }
 
-    setOpen(false)
+    onClose()
   }
 
   return (

@@ -5,7 +5,7 @@ import { Highlight } from 'src/Highlight'
 import { CascaderNode, CascaderProps } from '../types'
 
 type X<T> = T & { pathLabel: string[] }
-function flatChildren<T extends { children?: T[]; label: string }>(
+function flatNodes<T extends { children?: T[]; label: string }>(
   nodes: T[],
   pathLabel: string[],
 ): X<T>[] {
@@ -15,7 +15,7 @@ function flatChildren<T extends { children?: T[]; label: string }>(
       return [
         ...acc,
         { ...node, pathLabel: nextPathLabel },
-        ...flatChildren(node.children, nextPathLabel),
+        ...flatNodes(node.children, nextPathLabel),
       ]
     }
     return [...acc, { ...node, pathLabel: nextPathLabel }]
@@ -23,15 +23,15 @@ function flatChildren<T extends { children?: T[]; label: string }>(
 }
 
 export function Cascader<T>({
-  onChange,
+  onSelect: onChange,
   isEqual,
   nodes,
-  value,
+  selected: value,
   render,
   search,
 }: CascaderProps<T>) {
   const path = useMemo(() => {
-    return getPath({ nodes, value: value, isEqual })
+    return getPath({ nodes, selected: value, isEqual })
   }, [nodes, value, isEqual])
 
   const [searchText, setSearchText] = useState(search)
@@ -41,42 +41,46 @@ export function Cascader<T>({
   }, [search])
 
   if (searchText) {
-    const flattenNodes = flatChildren<CascaderNode<T>>(nodes, [])
+    const flattenNodes = flatNodes<CascaderNode<T>>(nodes, [])
 
     return (
-      <MenuList>
-        {flattenNodes
-          .filter(
-            (node) =>
-              !!node.pathLabel.find((label) => label.includes(searchText)),
-          )
-          .map((node) => (
-            <MenuItem
-              key={node.key}
-              onClick={() => {
-                onChange(node.value, !node.children)
-                setSearchText('')
-              }}
-            >
-              <Highlight search={search}>
-                {node.pathLabel.join(' / ')}
-              </Highlight>
-            </MenuItem>
-          ))}
-      </MenuList>
+      <Paper>
+        <MenuList>
+          {flattenNodes
+            // filter leaf node
+            .filter((node) => !node.children)
+            .filter(
+              (node) =>
+                !!node.pathLabel.find((label) => label.includes(searchText)),
+            )
+            .map((node) => (
+              <MenuItem
+                key={node.key}
+                onClick={() => {
+                  onChange(node.value, !node.children)
+                  setSearchText('')
+                }}
+              >
+                <Highlight search={search}>
+                  {node.pathLabel.join(' / ')}
+                </Highlight>
+              </MenuItem>
+            ))}
+        </MenuList>
+      </Paper>
     )
   }
   return (
     <Box display="flex">
       {new Array(path.length + 1).fill(null).map((_, depth) => (
-        <Column
+        <Column<T>
           key={depth}
           depth={depth}
           currentDepthNodes={
             depth === 0 ? nodes : path[depth - 1].children || []
           }
           path={path}
-          onChange={onChange}
+          onSelect={onChange}
           render={render}
         />
       ))}
@@ -88,13 +92,13 @@ function Column<T>({
   currentDepthNodes,
   depth,
   path,
-  onChange: onChange,
+  onSelect: onChange,
   render,
 }: {
   currentDepthNodes: CascaderNode<T>[]
   depth: number
   path: CascaderNode<T>[]
-} & Pick<CascaderProps<T>, 'render' | 'onChange'>) {
+} & Pick<CascaderProps<T>, 'render' | 'onSelect'>) {
   return (
     <Paper>
       {currentDepthNodes.map((node) => {
@@ -129,18 +133,21 @@ function Column<T>({
 
 function getPath<T>({
   nodes,
-  value: select,
+  selected,
   isEqual,
-}: Pick<CascaderProps<T>, 'nodes' | 'value' | 'isEqual'>): CascaderNode<T>[] {
-  if (select === null) return []
+}: Pick<
+  CascaderProps<T>,
+  'nodes' | 'selected' | 'isEqual'
+>): CascaderNode<T>[] {
+  if (selected === null) return []
   const res: CascaderNode<T>[] = []
   nodes.forEach((node) => {
-    if (isEqual ? isEqual(node.value, select) : node.value === select) {
+    if (isEqual ? isEqual(node.value, selected) : node.value === selected) {
       res.push(node)
     } else if (node.children) {
       const childPath = getPath({
         nodes: node.children,
-        value: select,
+        selected: selected,
         isEqual,
       })
       if (childPath.length > 0) {

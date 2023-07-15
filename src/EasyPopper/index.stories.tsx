@@ -27,7 +27,9 @@ export const Defalut = () => {
       <EasyPopper
         anchorRef={anchorRef}
         open={open}
-        setOpen={setOpen}
+        onClose={() => {
+          setOpen(false)
+        }}
       >
         <Paper
           sx={{

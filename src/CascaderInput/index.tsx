@@ -1,50 +1,61 @@
 import { Box, TextField } from '@mui/material'
-import React, { RefObject, useState } from 'react'
+import { RefObject, useRef, useState } from 'react'
 import { Cascader } from 'src/Cascader'
 import { EasyPopper } from 'src/EasyPopper'
 import { CascaderInputProps } from '../types'
 
 export function CascaderInput<T>(props: CascaderInputProps<T>) {
+  const [isSearch, setIsSearch] = useState<boolean>(false)
   const [search, setSearch] = useState<string>('')
 
-  const [open, setOpen] = useState<boolean>(false)
-  const anchorRef = React.useRef<HTMLDivElement>(null)
-  const inputRef = React.useRef<HTMLInputElement>(null)
-  const { value, nodes, render, isEqual, onChange } = props
+  const [focused, setFocused] = useState<boolean>(false)
+  const anchorRef = useRef<HTMLDivElement>(null)
+  const { value, onChange, nodes, render, isEqual } = props
+
+  const [selected, onSelect] = useState(value)
 
   return (
     <>
       <TextField
+        focused={focused}
         autoComplete="off"
         label="search"
         onFocus={() => {
-          setOpen(true)
+          setFocused(true)
+          setIsSearch(true)
+          onSelect(value)
         }}
-        inputRef={inputRef}
         ref={anchorRef}
-        placeholder="Please enter text"
-        value={search}
+        placeholder={isSearch ? (value as string) : ''}
+        value={isSearch ? search : value}
         onChange={(e) => {
           setSearch(e.target.value)
         }}
       />
       <EasyPopper
         anchorRef={anchorRef as unknown as RefObject<HTMLButtonElement>}
-        open={open}
-        setOpen={setOpen}
+        open={focused}
+        onClose={() => {
+          setFocused(false)
+          setIsSearch(false)
+          setSearch('')
+        }}
       >
         <Box>
           <Cascader<T>
             render={render}
             nodes={nodes}
             isEqual={isEqual}
-            value={value}
-            onChange={(nextSelect, isLeaf) => {
-              onChange(nextSelect, isLeaf)
+            selected={selected}
+            onSelect={(nextSelect, isLeaf) => {
+              onSelect(nextSelect)
               if (isLeaf) {
-                setOpen(false)
+                setFocused(false)
+                onChange(nextSelect)
+                setIsSearch(false)
+                setSearch('')
               } else {
-                inputRef.current?.focus()
+                onSelect(nextSelect)
               }
             }}
             search={search}
