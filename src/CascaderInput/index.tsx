@@ -10,7 +10,7 @@ export function CascaderInput<T>(props: CascaderInputProps<T>) {
 
   const [focused, setFocused] = useState<boolean>(false)
   const anchorRef = useRef<HTMLDivElement>(null)
-  const { value, onChange, nodes, render, isEqual } = props
+  const { value, onChange, nodes, renderNode: render, isEqual } = props
 
   const [selected, onSelect] = useState(value)
 
@@ -43,7 +43,7 @@ export function CascaderInput<T>(props: CascaderInputProps<T>) {
       >
         <Box>
           <Cascader<T>
-            render={render}
+            renderNode={render}
             nodes={nodes}
             isEqual={isEqual}
             selected={selected}

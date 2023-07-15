@@ -2,7 +2,7 @@ import { ReactNode } from 'react'
 
 export type CascaderInputProps<T> = Pick<
   CascaderProps<T>,
-  'nodes' | 'render' | 'isEqual'
+  'nodes' | 'renderNode' | 'isEqual'
 > & {
   value: T | null
   onChange: (value: T | null) => void
@@ -24,7 +24,7 @@ export interface CascaderProps<T> {
    * render function to customize the node
    * Label is Higlight component
    */
-  render?: (
+  renderNode?: (
     Label: ReactNode,
     props: { value: T; depth: number; children?: CascaderNode<T>[] },
   ) => ReactNode

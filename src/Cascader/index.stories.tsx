@@ -52,7 +52,7 @@ type Shape = {
   age?: number
 }
 
-export const Render = () => {
+export const RenderNode = () => {
   const [select, setSelected] = useState<Shape | null>({
     id: 2,
     name: '0-1',
@@ -98,7 +98,7 @@ export const Render = () => {
       selected={select}
       onSelect={setSelected}
       isEqual={(a, b) => a.id === b.id}
-      render={(Label, { value }) => (
+      renderNode={(Label, { value }) => (
         <Box
           sx={{
             justifyContent: 'center',

@@ -17,7 +17,7 @@ export function Cascader<T>({
   isEqual,
   nodes,
   selected: value,
-  render,
+  renderNode: render,
   search,
 }: CascaderProps<T>) {
   const path = useMemo(() => {
@@ -88,7 +88,7 @@ export function Cascader<T>({
           }
           path={path}
           onSelect={onChange}
-          render={render}
+          renderNode={render}
         />
       ))}
     </Box>
@@ -100,12 +100,12 @@ function Column<T>({
   depth,
   path,
   onSelect: onChange,
-  render,
+  renderNode: render,
 }: {
   currentDepthNodes: CascaderNode<T>[]
   depth: number
   path: CascaderNode<T>[]
-} & Pick<CascaderProps<T>, 'render' | 'onSelect'>) {
+} & Pick<CascaderProps<T>, 'renderNode' | 'onSelect'>) {
   return (
     <Paper>
       {currentDepthNodes.map((node) => {
