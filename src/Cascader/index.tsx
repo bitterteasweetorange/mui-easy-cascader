@@ -1,30 +1,22 @@
-import { KeyboardArrowRight } from '@mui/icons-material'
-import {
-  Box,
-  ListItemText,
-  MenuItem,
-  MenuList,
-  Paper,
-  Typography,
-} from '@mui/material'
+import { Box, MenuItem, MenuList, Paper, Typography } from '@mui/material'
 import { Fragment, useEffect, useMemo, useState } from 'react'
+import { Column } from 'src/Column'
 import { Highlight } from 'src/Highlight'
 import { flatNodes } from 'src/utils/flatNodes'
-import { getLabel } from 'src/utils/getNodeLabel'
 import { CascaderNode, CascaderProps } from '../types'
 
 export function Cascader<T>({
-  onSelect: onChange,
+  onSelect,
   isEqual,
   nodes,
-  selected: value,
-  renderNode: render,
+  selected,
+  renderNode,
   search,
   getNodeLabel,
 }: CascaderProps<T>) {
-  const path = useMemo(() => {
-    return getPath({ nodes, selected: value, isEqual })
-  }, [nodes, value, isEqual])
+  const selectedPath = useMemo(() => {
+    return getSelectedPath({ nodes, selected, isEqual })
+  }, [nodes, selected, isEqual])
 
   const [searchText, setSearchText] = useState(search)
 
@@ -48,7 +40,7 @@ export function Cascader<T>({
               <MenuItem
                 key={index}
                 onClick={() => {
-                  onChange(item.value, item.isLeaf)
+                  onSelect(item.value, item.isLeaf)
                   setSearchText('')
                 }}
               >
@@ -80,16 +72,17 @@ export function Cascader<T>({
   }
   return (
     <Box display="flex">
-      {new Array(path.length + 1).fill(null).map((_, depth) => (
+      {new Array(selectedPath.length + 1).fill(null).map((_, depth) => (
         <Column<T>
+          isEqual={isEqual}
           key={depth}
           depth={depth}
           currentDepthNodes={
-            depth === 0 ? nodes : path[depth - 1].children || []
+            depth === 0 ? nodes : selectedPath[depth - 1].children || []
           }
-          path={path}
-          onSelect={onChange}
-          renderNode={render}
+          path={selectedPath}
+          onSelect={onSelect}
+          renderNode={renderNode}
           getNodeLabel={getNodeLabel}
         />
       ))}
@@ -97,53 +90,7 @@ export function Cascader<T>({
   )
 }
 
-function Column<T>({
-  currentDepthNodes,
-  depth,
-  path,
-  onSelect,
-  renderNode: render,
-  getNodeLabel,
-}: {
-  currentDepthNodes: CascaderNode<T>[]
-  depth: number
-  path: CascaderNode<T>[]
-} & Pick<CascaderProps<T>, 'renderNode' | 'onSelect' | 'getNodeLabel'>) {
-  return (
-    <Paper>
-      {currentDepthNodes.map((node, index) => {
-        const selected = path[depth] === node
-        return (
-          <MenuList key={index}>
-            <MenuItem
-              selected={selected}
-              onClick={() => {
-                onSelect(node.value, !node.children)
-              }}
-            >
-              {render ? (
-                render?.(getLabel(node.value, getNodeLabel), {
-                  depth,
-                  children: node.children,
-                  value: node.value,
-                })
-              ) : (
-                <ListItemText>
-                  {getLabel(node.value, getNodeLabel)}
-                </ListItemText>
-              )}
-              {node.children && (
-                <KeyboardArrowRight color={selected ? 'primary' : 'disabled'} />
-              )}
-            </MenuItem>
-          </MenuList>
-        )
-      })}
-    </Paper>
-  )
-}
-
-function getPath<T>({
+export function getSelectedPath<T>({
   nodes,
   selected,
   isEqual,
@@ -157,7 +104,7 @@ function getPath<T>({
     if (isEqual ? isEqual(node.value, selected) : node.value === selected) {
       res.push(node)
     } else if (node.children) {
-      const childPath = getPath({
+      const childPath = getSelectedPath({
         nodes: node.children,
         selected: selected,
         isEqual,
