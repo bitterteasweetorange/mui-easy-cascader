@@ -16,6 +16,9 @@
     "url": "https://github.com/bitterteasweetorange/mui-easy-cascader/"
   },
   "scripts": {
+    "format": "prettier \"**/*\" --ignore-unknown",
+    "format:write": "pnpm format --write",
+    "lint": "eslint .",
     "build": "rm -rf dist/ && rollup -c  --environment BUILD:production --bundleConfigAsCjs",
     "build-storybook": "storybook build",
     "dev": "rm -rf dist/ && rollup -c -w",
@@ -63,8 +66,8 @@
     "eslint": "^8.44.0",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.1",
     "eslint-plugin-storybook": "^0.6.12",
+    "prettier": "^3.0.0",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
