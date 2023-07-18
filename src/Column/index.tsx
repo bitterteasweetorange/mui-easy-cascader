@@ -12,36 +12,50 @@ import { getLabel } from 'src/utils/getNodeLabel'
 export function Column<T>({
   currentDepthNodes,
   depth,
-  path,
-  onSelect,
   renderNode,
   getNodeLabel,
   isEqual,
   multiple,
+  onNodeClick,
+  checked,
+  indeterminate,
 }: {
   currentDepthNodes: CascaderNode<T>[]
   depth: number
-  path: CascaderNode<T>[]
   multiple?: boolean
-} & Pick<
-  CascaderProps<T>,
-  'isEqual' | 'renderNode' | 'onSelect' | 'getNodeLabel'
->) {
+  onNodeClick: (node: CascaderNode<T>, nextChecked: boolean) => void
+  checked: T[]
+  indeterminate?: T[]
+} & Pick<CascaderProps<T>, 'isEqual' | 'renderNode' | 'getNodeLabel'>) {
   return (
     <Paper>
-      {currentDepthNodes.map((node, index) => {
-        const selected =
-          isEqual?.(path[depth]?.value, node?.value) ||
-          path[depth]?.value === node?.value
-        return (
-          <MenuList key={index}>
+      <MenuList>
+        {currentDepthNodes.map((node, index) => {
+          const isSelected = !!checked.find(
+            (checkedItem) =>
+              isEqual?.(checkedItem, node?.value) ||
+              checkedItem === node?.value,
+          )
+          const indeterminateItem = !!indeterminate?.find(
+            (checkedItem) =>
+              isEqual?.(checkedItem, node?.value) ||
+              checkedItem === node?.value,
+          )
+          return (
             <MenuItem
-              selected={selected}
+              key={index}
+              selected={isSelected}
               onClick={() => {
-                onSelect(node.value, !node.children)
+                onNodeClick(node, !isSelected)
               }}
             >
-              {multiple && <Checkbox checked={selected} />}
+              {multiple && (
+                <Checkbox
+                  size="small"
+                  indeterminate={indeterminateItem}
+                  checked={isSelected}
+                />
+              )}
               {renderNode ? (
                 renderNode?.(getLabel(node.value, getNodeLabel), {
                   depth,
@@ -49,17 +63,25 @@ export function Column<T>({
                   value: node.value,
                 })
               ) : (
-                <ListItemText>
+                <ListItemText
+                  sx={{
+                    '& span': {
+                      fontWeight: isSelected ? 'bold' : 'normal',
+                    },
+                  }}
+                >
                   {getLabel(node.value, getNodeLabel)}
                 </ListItemText>
               )}
               {node.children && (
-                <KeyboardArrowRight color={selected ? 'primary' : 'disabled'} />
+                <KeyboardArrowRight
+                  color={isSelected ? 'primary' : 'disabled'}
+                />
               )}
             </MenuItem>
-          </MenuList>
-        )
-      })}
+          )
+        })}
+      </MenuList>
     </Paper>
   )
 }

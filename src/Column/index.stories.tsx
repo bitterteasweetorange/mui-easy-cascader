@@ -11,13 +11,10 @@ export default meta
 export const Defalut = () => {
   return (
     <Column<string>
-      path={[
-        {
-          value: '1',
-        },
-      ]}
+      checked={['1']}
+      indeterminate={['0']}
       depth={0}
-      onSelect={() => {
+      onNodeClick={() => {
         // TODO
       }}
       renderNode={(Label) => <>prefix-{Label}</>}

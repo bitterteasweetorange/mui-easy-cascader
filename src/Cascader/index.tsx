@@ -72,20 +72,27 @@ export function Cascader<T>({
   }
   return (
     <Box display="flex">
-      {new Array(selectedPath.length + 1).fill(null).map((_, depth) => (
-        <Column<T>
-          isEqual={isEqual}
-          key={depth}
-          depth={depth}
-          currentDepthNodes={
-            depth === 0 ? nodes : selectedPath[depth - 1].children || []
-          }
-          path={selectedPath}
-          onSelect={onSelect}
-          renderNode={renderNode}
-          getNodeLabel={getNodeLabel}
-        />
-      ))}
+      {new Array(selectedPath.length + 1).fill(null).map((_, depth) => {
+        const checkedItem = selectedPath?.[depth]?.value
+
+        return (
+          <Column<T>
+            indeterminate={[]}
+            checked={checkedItem ? [checkedItem] : []}
+            isEqual={isEqual}
+            key={depth}
+            depth={depth}
+            currentDepthNodes={
+              depth === 0 ? nodes : selectedPath[depth - 1].children || []
+            }
+            onNodeClick={(node) => {
+              onSelect(node.value, !node.children)
+            }}
+            renderNode={renderNode}
+            getNodeLabel={getNodeLabel}
+          />
+        )
+      })}
     </Box>
   )
 }

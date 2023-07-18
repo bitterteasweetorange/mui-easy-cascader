@@ -46,3 +46,29 @@ export interface CascaderNode<T> {
    */
   children?: CascaderNode<T>[]
 }
+
+export interface MultiCascaderProps<T> {
+  nodes: CascaderNode<T>[]
+  selected: T[] | null
+  onSelect: (value: T | null, isLeaf: boolean) => void
+  /**
+   * filter / hightlight the nodes by search text
+   */
+  search?: string
+  /**
+   * compare function to check if two values are equal
+   */
+  isEqual?: (a: T, b: T) => boolean
+  /**
+   * render function to customize the node
+   * Label is Higlight component
+   */
+  renderNode?: (
+    Label: ReactNode,
+    props: { value: T; depth: number; children?: CascaderNode<T>[] },
+  ) => ReactNode
+  /**
+   * get the label of the node for hightlight and filter
+   */
+  getNodeLabel?: (value: T) => string
+}

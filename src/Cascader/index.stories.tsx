@@ -13,8 +13,8 @@ const meta = {
 export default meta
 
 export const Defalut = () => {
-  const [select, setSelected] = useState<string | null>('0-1-2-0')
-  const mockNodes = createCascaderNodes(6)
+  const [select, setSelected] = useState<string | null>('0-0')
+  const mockNodes = createCascaderNodes(3)
   return (
     <Cascader<string>
       nodes={mockNodes}
