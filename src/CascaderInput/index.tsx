@@ -18,6 +18,11 @@ export function CascaderInput<T>(props: CascaderInputProps<T>) {
     nodes,
     renderNode: render,
     isEqual,
+    label,
+    error,
+    disabled,
+    required,
+    helperText,
   } = props
 
   const [selected, onSelect] = useState<T | null>(value)
@@ -27,7 +32,11 @@ export function CascaderInput<T>(props: CascaderInputProps<T>) {
       <TextField
         focused={focused}
         autoComplete="off"
-        label="search"
+        label={label}
+        error={error}
+        disabled={disabled}
+        required={required}
+        helperText={helperText}
         onFocus={() => {
           setFocused(true)
           setIsSearch(true)

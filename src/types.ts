@@ -6,6 +6,11 @@ export type CascaderInputProps<T> = Pick<
 > & {
   value: T | null
   onChange: (value: T | null) => void
+  label?: ReactNode
+  error?: boolean
+  helperText?: ReactNode
+  required?: boolean
+  disabled?: boolean
 }
 
 export interface CascaderProps<T> {
