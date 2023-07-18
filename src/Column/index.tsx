@@ -57,21 +57,24 @@ export function Column<T>({
                 />
               )}
               {renderNode ? (
-                renderNode?.(getLabel(node.value, getNodeLabel), {
-                  depth,
-                  children: node.children,
-                  value: node.value,
-                })
+                renderNode?.(
+                  <Label
+                    isSelected={isSelected}
+                    getNodeLabel={getNodeLabel}
+                    node={node}
+                  />,
+                  {
+                    depth,
+                    children: node.children,
+                    value: node.value,
+                  },
+                )
               ) : (
-                <ListItemText
-                  sx={{
-                    '& span': {
-                      fontWeight: isSelected ? 'bold' : 'normal',
-                    },
-                  }}
-                >
-                  {getLabel(node.value, getNodeLabel)}
-                </ListItemText>
+                <Label
+                  isSelected={isSelected}
+                  getNodeLabel={getNodeLabel}
+                  node={node}
+                />
               )}
               {node.children && (
                 <KeyboardArrowRight
@@ -83,5 +86,27 @@ export function Column<T>({
         })}
       </MenuList>
     </Paper>
+  )
+}
+
+function Label<T>({
+  node,
+  isSelected,
+  getNodeLabel,
+}: {
+  isSelected: boolean
+  node: CascaderNode<T>
+  getNodeLabel: CascaderProps<T>['getNodeLabel']
+}) {
+  return (
+    <ListItemText
+      sx={{
+        '& span': {
+          fontWeight: isSelected ? 'bold' : 'normal',
+        },
+      }}
+    >
+      {getLabel(node.value, getNodeLabel)}
+    </ListItemText>
   )
 }

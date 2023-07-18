@@ -1,6 +1,6 @@
 {
   "name": "mui-easy-cascader",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "types": "dist/src/index.d.ts",
@@ -26,7 +26,7 @@
   },
   "author": "orange",
   "description": "cascader based on MUI",
-  "homepage": "https://bitterteasweetorange.github.io/mui-easy-cascader",
+  "homepage": "https://bitterteasweetorange.github.io/mui-easy-cascader/?path=/story/input-cascaderinput--defalut",
   "keywords": [
     "MUI",
     "typescript",
@@ -79,11 +79,11 @@
     "vite": "^4.3.9"
   },
   "peerDependencies": {
-    "@emotion/react": "^11.11.1",
-    "@emotion/styled": "^11.11.0",
-    "@mui/material": "^5.14.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "@emotion/react": ">=11",
+    "@emotion/styled": ">=11",
+    "@mui/material": ">=5",
+    "react": ">=16.8",
+    "react-dom": ">=16.8"
   },
   "dependencies": {
     "@mui/icons-material": "^5.14.0",
