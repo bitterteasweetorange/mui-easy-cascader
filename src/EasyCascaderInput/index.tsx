@@ -1,11 +1,11 @@
 import { Box, TextField } from '@mui/material'
 import { RefObject, useRef, useState } from 'react'
-import { Cascader } from 'src/Cascader'
+import { EasyCascader } from 'src/EasyCascader'
 import { EasyPopper } from 'src/EasyPopper'
 import { getLabel } from 'src/utils/getNodeLabel'
 import { CascaderInputProps } from '../types'
 
-export function CascaderInput<T>(props: CascaderInputProps<T>) {
+export function EasyCascaderInput<T>(props: CascaderInputProps<T>) {
   const [isSearch, setIsSearch] = useState<boolean>(false)
   const [search, setSearch] = useState<string>('')
 
@@ -50,8 +50,8 @@ export function CascaderInput<T>(props: CascaderInputProps<T>) {
           isSearch
             ? search
             : value === null
-              ? ''
-              : getLabel(value, getNodeLabel)
+            ? ''
+            : getLabel(value, getNodeLabel)
         }
         onChange={(e) => {
           setSearch(e.target.value)
@@ -67,7 +67,7 @@ export function CascaderInput<T>(props: CascaderInputProps<T>) {
         }}
       >
         <Box>
-          <Cascader<T>
+          <EasyCascader<T>
             getNodeLabel={getNodeLabel}
             renderNode={render}
             nodes={nodes}

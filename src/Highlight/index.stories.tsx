@@ -13,6 +13,14 @@ type Story = StoryObj<HighlightProps>
 export const Default: Story = {
   args: {
     search: 'ab',
-    children: 'abcdabcd',
+    text: 'abcdabcd',
+  },
+}
+
+export const Focus: Story = {
+  args: {
+    search: 'ab',
+    text: 'abcdabcd',
+    focused: true,
   },
 }

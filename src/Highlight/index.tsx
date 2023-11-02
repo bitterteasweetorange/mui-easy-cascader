@@ -1,6 +1,5 @@
+// copied from cascader
 import { Box, styled } from '@mui/material'
-import { debounceTime, map, skipWhile } from 'rxjs'
-import { useObservable } from 'rxjs-hooks'
 
 const StyledMark = styled('mark')<{ focused?: boolean }>(({ focused }) => ({
   backgroundColor: '#fde79b',
@@ -12,22 +11,15 @@ const StyledMark = styled('mark')<{ focused?: boolean }>(({ focused }) => ({
 export interface HighlightProps {
   search: string | undefined
   focused?: boolean
-  children: string
+  text: string
 }
 
 export function Highlight(props: HighlightProps) {
-  const { search: searchProp, focused, children } = props
-  const search = useObservable(
-    (_, inputs$) =>
-      inputs$.pipe(
-        map(([search]) => search || undefined),
-        skipWhile((search) => search === undefined),
-        debounceTime(300),
-      ),
-    undefined as string | undefined,
-    [searchProp],
-  )
-  const stringArray = children.split(new RegExp(`(${search})`, 'g'))
+  const { search, focused, text } = props
+
+  const stringArray = search
+    ? text.split(new RegExp(`(${search})`, 'g'))
+    : [text]
 
   return (
     <Box>
