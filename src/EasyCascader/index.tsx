@@ -7,7 +7,7 @@ import { CascaderProps, EasyCascaderBaseNode, Id } from '../types'
 export function EasyCascader<T extends EasyCascaderBaseNode>({
   selectedId,
   data,
-  search: debouncedSearch,
+  search,
   endAdornment,
   setSelectedId,
   startAdornment,
@@ -29,10 +29,8 @@ export function EasyCascader<T extends EasyCascaderBaseNode>({
   const [searchText, setSearchText] = useState('')
 
   useEffect(() => {
-    if (debouncedSearch) {
-      setSearchText(debouncedSearch)
-    }
-  }, [debouncedSearch])
+    setSearchText(search || '')
+  }, [search])
 
   const flattenNodes: T[] = useMemo(() => {
     if (!searchText) return []

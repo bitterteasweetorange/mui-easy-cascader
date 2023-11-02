@@ -2,22 +2,25 @@ import { Box, TextField } from '@mui/material'
 import { RefObject, useRef, useState } from 'react'
 import { EasyCascader } from 'src/EasyCascader'
 import { EasyPopper } from 'src/EasyPopper'
-import { getLabel } from 'src/utils/getNodeLabel'
-import { CascaderInputProps } from '../types'
+import { useDebounce } from 'use-debounce'
+import { CascaderInputProps, EasyCascaderBaseNode, Id } from '../types'
 
-export function EasyCascaderInput<T>(props: CascaderInputProps<T>) {
+export function EasyCascaderInput<T extends EasyCascaderBaseNode>(
+  props: CascaderInputProps<T>,
+) {
   const [isSearch, setIsSearch] = useState<boolean>(false)
   const [search, setSearch] = useState<string>('')
 
+  const [debouncedSearch] = useDebounce(search, 500)
   const [focused, setFocused] = useState<boolean>(false)
   const anchorRef = useRef<HTMLDivElement>(null)
   const {
     value,
     onChange,
     getNodeLabel,
-    nodes,
-    renderNode: render,
-    isEqual,
+    data,
+    endAdornment,
+    startAdornment,
     label,
     error,
     disabled,
@@ -25,7 +28,7 @@ export function EasyCascaderInput<T>(props: CascaderInputProps<T>) {
     helperText,
   } = props
 
-  const [selected, onSelect] = useState<T | null>(value)
+  const [selectedId, onSelectedId] = useState<Id | null>(value?.id ?? null)
 
   return (
     <>
@@ -40,19 +43,11 @@ export function EasyCascaderInput<T>(props: CascaderInputProps<T>) {
         onFocus={() => {
           setFocused(true)
           setIsSearch(true)
-          onSelect(value)
+          onSelectedId(value?.id ?? null)
         }}
         ref={anchorRef}
-        placeholder={
-          isSearch ? (value === null ? '' : getLabel(value, getNodeLabel)) : ''
-        }
-        value={
-          isSearch
-            ? search
-            : value === null
-            ? ''
-            : getLabel(value, getNodeLabel)
-        }
+        placeholder={isSearch && value ? getNodeLabel(value) : ''}
+        value={isSearch ? search : value === null ? '' : getNodeLabel(value)}
         onChange={(e) => {
           setSearch(e.target.value)
         }}
@@ -69,22 +64,25 @@ export function EasyCascaderInput<T>(props: CascaderInputProps<T>) {
         <Box>
           <EasyCascader<T>
             getNodeLabel={getNodeLabel}
-            renderNode={render}
-            nodes={nodes}
-            isEqual={isEqual}
-            selected={selected}
-            onSelect={(nextSelect, isLeaf) => {
-              onSelect(nextSelect)
+            startAdornment={startAdornment}
+            endAdornment={endAdornment}
+            selectedId={selectedId}
+            data={data}
+            setSelectedId={(id) => {
+              const node = data.find((node) => node.id === id)
+              if (!node) return
+              const isLeaf = node?.childrenId?.length === 0 || !node?.childrenId
+              onSelectedId(id)
               if (isLeaf) {
                 setFocused(false)
-                onChange(nextSelect)
+                onChange(node)
                 setIsSearch(false)
                 setSearch('')
               } else {
-                onSelect(nextSelect)
+                onSelectedId(id)
               }
             }}
-            search={search}
+            search={debouncedSearch}
           />
         </Box>
       </EasyPopper>

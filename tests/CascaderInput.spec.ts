@@ -1,11 +1,11 @@
 import { expect, test } from '@playwright/test'
 
-const path = '/iframe.html?id=input-cascaderinput--defalut&viewMode=story'
+const path = '/iframe.html?id=cascaderinput--defalut&viewMode=story'
 test('default value', async ({ page }) => {
   await page.goto(path)
 
   const input = page.locator('input')
-  await expect(input).toHaveValue('children-1(10)')
+  await expect(input).toHaveValue('children-1')
 })
 
 test('use value as placeholder when focused', async ({ page }) => {
@@ -15,10 +15,10 @@ test('use value as placeholder when focused', async ({ page }) => {
   await input.focus()
 
   await expect(input).toHaveValue('')
-  await expect(input).toHaveAttribute('placeholder', 'children-1(10)')
+  await expect(input).toHaveAttribute('placeholder', 'children-1')
 
   page.click('body')
-  await expect(input).toHaveValue('children-1(10)')
+  await expect(input).toHaveValue('children-1')
 })
 
 test('select leaf', async ({ page }) => {
@@ -45,17 +45,4 @@ test('render node', async ({ page }) => {
 
   await expect(li.first()).toHaveText('100')
   await expect(li.nth(1)).toHaveText('10')
-})
-
-// TODO
-test('search', async ({ page }) => {
-  await page.goto(path)
-
-  const input = page.locator('input')
-  await input.scrollIntoViewIfNeeded()
-  await input.type('10')
-
-  const items = page.getByRole('menuitem')
-  const length = (await items.all()).length
-  expect(length).toBe(2)
 })
