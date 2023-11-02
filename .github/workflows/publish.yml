@@ -35,7 +35,7 @@ jobs:
         run: pnpm install
 
       - name: Test
-        run: pnpm test-ct
+        run: npx playwright install && pnpm test-ct
 
       - name: Build
         run: pnpm build
