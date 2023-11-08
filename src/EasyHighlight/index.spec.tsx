@@ -1,14 +1,14 @@
 import { expect, test } from '@playwright/experimental-ct-react'
-import { Highlight } from '.'
+import { EasyHighlight } from '.'
 
 test.use({ viewport: { width: 501, height: 500 } })
 
 test('single', async ({ mount }) => {
   const component = await mount(
-    <Highlight
+    <EasyHighlight
       search="a"
       text="aba"
-    ></Highlight>,
+    ></EasyHighlight>,
   )
   await expect(component).toContainText('aba')
   const marks = component.locator('mark')
@@ -20,10 +20,10 @@ test('single', async ({ mount }) => {
 
 test('double', async ({ mount }) => {
   const component = await mount(
-    <Highlight
+    <EasyHighlight
       search="ab"
       text="aba"
-    ></Highlight>,
+    ></EasyHighlight>,
   )
   await expect(component).toContainText('aba')
   const mark = component.locator('mark')
@@ -33,11 +33,11 @@ test('double', async ({ mount }) => {
 
 test('focus', async ({ mount }) => {
   const component = await mount(
-    <Highlight
+    <EasyHighlight
       search="ab"
       focused
       text="aba"
-    ></Highlight>,
+    ></EasyHighlight>,
   )
   await expect(component).toContainText('aba')
   const mark = component.locator('mark')

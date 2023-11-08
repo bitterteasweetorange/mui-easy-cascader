@@ -1,4 +1,5 @@
 export * from './EasyCascader'
 export * from './EasyCascaderInput'
-export * from './Highlight'
+export * from './EasyHighlight'
+export * from './EasyPopper'
 export * from './types'

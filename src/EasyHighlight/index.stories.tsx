@@ -1,14 +1,14 @@
 import { Meta, StoryObj } from '@storybook/react'
-import { Highlight, HighlightProps } from '.'
+import { EasyHighlight, EasyHighlightProps } from '.'
 
 const meta = {
-  title: 'component/Highlight',
-  component: Highlight,
-} satisfies Meta<typeof Highlight>
+  title: 'component/EasyHighlight',
+  component: EasyHighlight,
+} satisfies Meta<typeof EasyHighlight>
 
 export default meta
 
-type Story = StoryObj<HighlightProps>
+type Story = StoryObj<EasyHighlightProps>
 
 export const Default: Story = {
   args: {

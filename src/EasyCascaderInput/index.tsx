@@ -1,12 +1,13 @@
-import { Box, TextField } from '@mui/material'
+import { TextField } from '@mui/material'
 import { RefObject, useRef, useState } from 'react'
 import { EasyCascader } from 'src/EasyCascader'
+import { EasyList } from 'src/EasyList'
 import { EasyPopper } from 'src/EasyPopper'
 import { useDebounce } from 'use-debounce'
-import { CascaderInputProps, EasyCascaderBaseNode, EasyId } from '../types'
+import { EasyCascaderInputProps, EasyCascaderBaseNode, EasyId } from '../types'
 
 export function EasyCascaderInput<T extends EasyCascaderBaseNode>(
-  props: CascaderInputProps<T>,
+  props: EasyCascaderInputProps<T>,
 ) {
   const [isSearch, setIsSearch] = useState<boolean>(false)
   const [search, setSearch] = useState<string>('')
@@ -17,18 +18,32 @@ export function EasyCascaderInput<T extends EasyCascaderBaseNode>(
   const {
     value,
     onChange,
-    getNodeLabel,
-    data,
-    endAdornment,
-    startAdornment,
     label,
     error,
     disabled,
     required,
     helperText,
+    ...duplication
   } = props
 
+  const { getNodeLabel, data } = duplication
+
   const [selectedId, onSelectedId] = useState<EasyId | null>(value?.id ?? null)
+
+  const setSelectedId = (id: EasyId | null) => {
+    const node = data.find((node) => node.id === id)
+    if (!node) return
+    const isLeaf = node?.childrenId?.length === 0 || !node?.childrenId
+    onSelectedId(id)
+    if (isLeaf) {
+      setFocused(false)
+      onChange(node)
+      setIsSearch(false)
+      setSearch('')
+    } else {
+      onSelectedId(id)
+    }
+  }
 
   return (
     <>
@@ -61,30 +76,21 @@ export function EasyCascaderInput<T extends EasyCascaderBaseNode>(
           setSearch('')
         }}
       >
-        <Box>
-          <EasyCascader<T>
-            getNodeLabel={getNodeLabel}
-            startAdornment={startAdornment}
-            endAdornment={endAdornment}
-            selectedId={selectedId}
-            data={data}
-            setSelectedId={(id) => {
-              const node = data.find((node) => node.id === id)
-              if (!node) return
-              const isLeaf = node?.childrenId?.length === 0 || !node?.childrenId
-              onSelectedId(id)
-              if (isLeaf) {
-                setFocused(false)
-                onChange(node)
-                setIsSearch(false)
-                setSearch('')
-              } else {
-                onSelectedId(id)
-              }
-            }}
+        {debouncedSearch ? (
+          <EasyList
+            {...duplication}
             search={debouncedSearch}
+            setSearch={setSearch}
+            selectedId={selectedId}
+            setSelectedId={setSelectedId}
           />
-        </Box>
+        ) : (
+          <EasyCascader<T>
+            {...duplication}
+            selectedId={selectedId}
+            setSelectedId={setSelectedId}
+          />
+        )}
       </EasyPopper>
     </>
   )

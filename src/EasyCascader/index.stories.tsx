@@ -6,7 +6,7 @@ import { EasyCascader } from '.'
 import { MockObject, mockObjectNodes } from '../mock'
 
 const meta = {
-  title: 'Cascader',
+  title: 'EasyCascader',
   component: EasyCascader,
 } satisfies Meta<typeof EasyCascader>
 
@@ -22,21 +22,6 @@ export const Defalut = () => {
       setSelectedId={setSelectedId}
       getNodeLabel={(node) => node.name}
       endAdornment={(node) => node.age && <Chip label={node.age} />}
-    />
-  )
-}
-
-export const Search = () => {
-  const [selectedId, setSelectedId] = useState<EasyId | null>(0)
-
-  return (
-    <EasyCascader<MockObject>
-      data={mockObjectNodes}
-      selectedId={selectedId}
-      setSelectedId={setSelectedId}
-      getNodeLabel={(node) => node.name}
-      endAdornment={(node) => node.age && <Chip label={node.age} />}
-      search={'0'}
     />
   )
 }

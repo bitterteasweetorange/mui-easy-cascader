@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 
-export type CascaderInputProps<T extends EasyCascaderBaseNode> =
+export type EasyCascaderInputProps<T extends EasyCascaderBaseNode> =
   EasyCascaderDuplicatedProps<T> & {
     value: T | null
     onChange: (value: T | null) => void
@@ -25,9 +25,8 @@ export type EasyCascaderDuplicatedProps<T> = {
   endAdornment?: (node: T) => ReactNode
 }
 
-export type CascaderProps<T extends EasyCascaderBaseNode> =
+export type EasyCascaderProps<T extends EasyCascaderBaseNode> =
   EasyCascaderDuplicatedProps<T> & {
-    search?: string
     selectedId: EasyId | null
     setSelectedId: (id: EasyId | null) => void
   }

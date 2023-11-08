@@ -1,4 +1,3 @@
-// copied from cascader
 import { Box, styled } from '@mui/material'
 
 const StyledMark = styled('mark')<{ focused?: boolean }>(({ focused }) => ({
@@ -8,13 +7,13 @@ const StyledMark = styled('mark')<{ focused?: boolean }>(({ focused }) => ({
   }),
 }))
 
-export interface HighlightProps {
+export interface EasyHighlightProps {
   search: string | undefined
   focused?: boolean
   text: string
 }
 
-export function Highlight(props: HighlightProps) {
+export function EasyHighlight(props: EasyHighlightProps) {
   const { search, focused, text } = props
 
   const stringArray = search
