@@ -1,39 +1,23 @@
 module.exports = {
-  env: {
-    browser: true,
-    es2021: true,
-    node: true,
-  },
+  root: true,
+  env: { node: true, browser: true, es2020: true },
   extends: [
     'eslint:recommended',
-    'plugin:react/recommended',
-    'plugin:react-hooks/recommended',
     'plugin:@typescript-eslint/recommended',
+    'plugin:react-hooks/recommended',
     'plugin:storybook/recommended',
   ],
+  ignorePatterns: ['dist', '.eslintrc.cjs'],
   parser: '@typescript-eslint/parser',
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-  },
-  settings: {
-    react: {
-      version: 'detect',
-    },
-  },
-  plugins: ['@typescript-eslint', 'react', 'react-hooks'],
+  plugins: ['react-refresh'],
   rules: {
-    'react/jsx-uses-react': 'off',
-    'react/react-in-jsx-scope': 'off',
-    'react-hooks/exhaustive-deps': 'error',
-    'max-lines': 'error',
-    'no-debugger': 'error',
-    'no-empty': 'error',
-    'default-case': 'error',
+    'react-refresh/only-export-components': [
+      'warn',
+      { allowConstantExport: true },
+    ],
     eqeqeq: 'error',
-    'no-return-assign': 'error',
-    'no-useless-return': 'warning',
+    'react-hooks/exhaustive-deps': 'error',
     'max-depth': 'error',
-    '@typescript-eslint/no-unused-vars': 'warning',
+    'max-lines': 'warn',
   },
 }
