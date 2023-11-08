@@ -2,7 +2,7 @@ import { Box, MenuItem, MenuList, Paper, Typography } from '@mui/material'
 import { Fragment, useEffect, useMemo, useState } from 'react'
 import { EasyCascaderColumn } from 'src/EasyCascaderColumn'
 import { Highlight } from 'src/Highlight'
-import { CascaderProps, EasyCascaderBaseNode, Id } from '../types'
+import { CascaderProps, EasyCascaderBaseNode, EasyId } from '../types'
 
 export function EasyCascader<T extends EasyCascaderBaseNode>({
   selectedId,
@@ -35,9 +35,10 @@ export function EasyCascader<T extends EasyCascaderBaseNode>({
   const flattenNodes: T[] = useMemo(() => {
     if (!searchText) return []
     return filterKeywordLastNodes(data, getNodeLabel, searchText)
-  }, [data, searchText])
+  }, [data, searchText, getNodeLabel])
 
   if (searchText) {
+    // TODO: extract to component
     return (
       <Paper>
         <MenuList>
@@ -94,7 +95,7 @@ export function EasyCascader<T extends EasyCascaderBaseNode>({
             (node) => node.id === selectedPathId?.[depth - 1],
           )
 
-          const ids: Id[] = depth === 0 ? rootId : parent?.childrenId || []
+          const ids: EasyId[] = depth === 0 ? rootId : parent?.childrenId || []
 
           return (
             <EasyCascaderColumn<T>

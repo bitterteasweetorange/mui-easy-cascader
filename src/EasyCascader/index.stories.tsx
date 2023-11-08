@@ -1,7 +1,7 @@
 import { Chip } from '@mui/material'
 import type { Meta } from '@storybook/react'
 import { useState } from 'react'
-import { Id } from 'src/types'
+import { EasyId } from 'src/types'
 import { EasyCascader } from '.'
 import { MockObject, mockObjectNodes } from '../mock'
 
@@ -13,7 +13,7 @@ const meta = {
 export default meta
 
 export const Defalut = () => {
-  const [selectedId, setSelectedId] = useState<Id | null>(0)
+  const [selectedId, setSelectedId] = useState<EasyId | null>(0)
 
   return (
     <EasyCascader<MockObject>
@@ -27,7 +27,7 @@ export const Defalut = () => {
 }
 
 export const Search = () => {
-  const [selectedId, setSelectedId] = useState<Id | null>(0)
+  const [selectedId, setSelectedId] = useState<EasyId | null>(0)
 
   return (
     <EasyCascader<MockObject>

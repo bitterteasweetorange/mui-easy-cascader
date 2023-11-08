@@ -1,6 +1,6 @@
 import { KeyboardArrowRight } from '@mui/icons-material'
 import { ListItemText, MenuItem, MenuList, Paper } from '@mui/material'
-import { CascaderProps, EasyCascaderBaseNode, Id } from 'src/types'
+import { CascaderProps, EasyCascaderBaseNode, EasyId } from 'src/types'
 
 export function EasyCascaderColumn<T extends EasyCascaderBaseNode>({
   ids,
@@ -11,8 +11,8 @@ export function EasyCascaderColumn<T extends EasyCascaderBaseNode>({
   startAdornment,
   getNodeLabel,
 }: {
-  ids: Id[]
-  activedId?: Id | null
+  ids: EasyId[]
+  activedId?: EasyId | null
   onNodeClick: (node: T, selected: boolean) => void
 } & Pick<
   CascaderProps<T>,

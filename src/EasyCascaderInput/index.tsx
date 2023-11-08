@@ -3,7 +3,7 @@ import { RefObject, useRef, useState } from 'react'
 import { EasyCascader } from 'src/EasyCascader'
 import { EasyPopper } from 'src/EasyPopper'
 import { useDebounce } from 'use-debounce'
-import { CascaderInputProps, EasyCascaderBaseNode, Id } from '../types'
+import { CascaderInputProps, EasyCascaderBaseNode, EasyId } from '../types'
 
 export function EasyCascaderInput<T extends EasyCascaderBaseNode>(
   props: CascaderInputProps<T>,
@@ -28,7 +28,7 @@ export function EasyCascaderInput<T extends EasyCascaderBaseNode>(
     helperText,
   } = props
 
-  const [selectedId, onSelectedId] = useState<Id | null>(value?.id ?? null)
+  const [selectedId, onSelectedId] = useState<EasyId | null>(value?.id ?? null)
 
   return (
     <>

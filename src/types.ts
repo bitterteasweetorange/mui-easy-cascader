@@ -11,11 +11,11 @@ export type CascaderInputProps<T extends EasyCascaderBaseNode> =
     disabled?: boolean
   }
 
-export type Id = number | string
+export type EasyId = number | string
 export type EasyCascaderBaseNode = {
-  id: Id
-  childrenId?: Id[]
-  pathId?: Id[]
+  id: EasyId
+  childrenId?: EasyId[]
+  pathId?: EasyId[]
 }
 
 export type EasyCascaderDuplicatedProps<T> = {
@@ -28,6 +28,6 @@ export type EasyCascaderDuplicatedProps<T> = {
 export type CascaderProps<T extends EasyCascaderBaseNode> =
   EasyCascaderDuplicatedProps<T> & {
     search?: string
-    selectedId: Id | null
-    setSelectedId: (id: Id | null) => void
+    selectedId: EasyId | null
+    setSelectedId: (id: EasyId | null) => void
   }
