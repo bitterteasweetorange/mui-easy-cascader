@@ -1,10 +1,10 @@
-import { TextField } from '@mui/material'
-import { RefObject, useRef, useState } from 'react'
+import { Box, TextField } from '@mui/material'
+import { RefObject, useMemo, useRef, useState } from 'react'
 import { EasyCascader } from 'src/EasyCascader'
 import { EasyList } from 'src/EasyList'
 import { EasyPopper } from 'src/EasyPopper'
 import { useDebounce } from 'use-debounce'
-import { EasyCascaderInputProps, EasyCascaderBaseNode, EasyId } from '../types'
+import { EasyCascaderBaseNode, EasyCascaderInputProps, EasyId } from '../types'
 
 export function EasyCascaderInput<T extends EasyCascaderBaseNode>(
   props: EasyCascaderInputProps<T>,
@@ -23,6 +23,7 @@ export function EasyCascaderInput<T extends EasyCascaderBaseNode>(
     disabled,
     required,
     helperText,
+    displayPath,
     ...duplication
   } = props
 
@@ -45,6 +46,18 @@ export function EasyCascaderInput<T extends EasyCascaderBaseNode>(
     }
   }
 
+  const textValue = useMemo(() => {
+    if (value === null) return ''
+    if (!displayPath) return getNodeLabel(value)
+    const text = [...(value.pathId || []), value.id]
+      ?.map((id) => {
+        const node = data.find((node) => node.id === id)
+        return node ? getNodeLabel(node) : ''
+      })
+      .join(' / ')
+    return text
+  }, [data, getNodeLabel, value, displayPath])
+
   return (
     <>
       <TextField
@@ -61,8 +74,8 @@ export function EasyCascaderInput<T extends EasyCascaderBaseNode>(
           onSelectedId(value?.id ?? null)
         }}
         ref={anchorRef}
-        placeholder={isSearch && value ? getNodeLabel(value) : ''}
-        value={isSearch ? search : value === null ? '' : getNodeLabel(value)}
+        placeholder={isSearch && value ? textValue : ''}
+        value={isSearch ? search : textValue}
         onChange={(e) => {
           setSearch(e.target.value)
         }}
@@ -76,21 +89,23 @@ export function EasyCascaderInput<T extends EasyCascaderBaseNode>(
           setSearch('')
         }}
       >
-        {debouncedSearch ? (
-          <EasyList
-            {...duplication}
-            search={debouncedSearch}
-            setSearch={setSearch}
-            selectedId={selectedId}
-            setSelectedId={setSelectedId}
-          />
-        ) : (
-          <EasyCascader<T>
-            {...duplication}
-            selectedId={selectedId}
-            setSelectedId={setSelectedId}
-          />
-        )}
+        <Box>
+          {debouncedSearch ? (
+            <EasyList
+              {...duplication}
+              search={debouncedSearch}
+              setSearch={setSearch}
+              selectedId={selectedId}
+              setSelectedId={setSelectedId}
+            />
+          ) : (
+            <EasyCascader<T>
+              {...duplication}
+              selectedId={selectedId}
+              setSelectedId={setSelectedId}
+            />
+          )}
+        </Box>
       </EasyPopper>
     </>
   )

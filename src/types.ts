@@ -9,6 +9,7 @@ export type EasyCascaderInputProps<T extends EasyCascaderBaseNode> =
     helperText?: ReactNode
     required?: boolean
     disabled?: boolean
+    displayPath?: boolean
   }
 
 export type EasyId = number | string

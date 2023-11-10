@@ -25,3 +25,17 @@ export const Defalut = () => {
     />
   )
 }
+
+export const DisplayPath = () => {
+  const [value, onChange] = useState<MockObject | null>(mockObjectNodes[2])
+
+  return (
+    <EasyCascaderInput<MockObject>
+      data={mockObjectNodes}
+      getNodeLabel={(node) => node.name}
+      value={value}
+      onChange={onChange}
+      displayPath
+    />
+  )
+}

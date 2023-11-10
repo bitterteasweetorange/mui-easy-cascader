@@ -44,7 +44,7 @@ export function EasyCascaderColumn<T extends EasyCascaderBaseNode>({
                 {getNodeLabel(node)}
                 {endAdornment?.(node)}
               </ListItemText>
-              {node.childrenId && (
+              {node.childrenId && node.childrenId.length !== 0 && (
                 <KeyboardArrowRight color={selected ? 'primary' : 'disabled'} />
               )}
             </MenuItem>
