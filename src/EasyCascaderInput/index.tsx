@@ -94,9 +94,11 @@ export function EasyCascaderInput<T extends EasyCascaderBaseNode>(
             <EasyList
               {...duplication}
               search={debouncedSearch}
-              setSearch={setSearch}
               selectedId={selectedId}
-              setSelectedId={setSelectedId}
+              onSelect={(id) => {
+                setSelectedId(id)
+                setSearch('')
+              }}
             />
           ) : (
             <EasyCascader<T>

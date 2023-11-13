@@ -1,12 +1,17 @@
 import { Box, MenuItem, MenuList, Paper, Typography } from '@mui/material'
 import { Fragment } from 'react'
 import { EasyHighlight } from 'src/EasyHighlight'
-import { EasyCascaderBaseNode, EasyCascaderProps } from 'src/types'
+import {
+  EasyCascaderBaseNode,
+  EasyCascaderDuplicatedProps,
+  EasyId,
+} from 'src/types'
 
 export type EasyListProps<T extends EasyCascaderBaseNode> = {
   search: string
-  setSearch: (search: string) => void
-} & EasyCascaderProps<T>
+  selectedId: EasyId | null
+  onSelect: (id: EasyId | null) => void
+} & EasyCascaderDuplicatedProps<T>
 
 export function EasyList<T extends EasyCascaderBaseNode>(
   props: EasyListProps<T>,
@@ -16,10 +21,9 @@ export function EasyList<T extends EasyCascaderBaseNode>(
     endAdornment,
     startAdornment,
     search,
-    setSearch,
     getNodeLabel,
     selectedId,
-    setSelectedId,
+    onSelect,
   } = props
 
   return (
@@ -30,8 +34,7 @@ export function EasyList<T extends EasyCascaderBaseNode>(
             selected={node.id === selectedId}
             key={node.id}
             onClick={() => {
-              setSelectedId(node.id)
-              setSearch('')
+              onSelect(node.id)
             }}
           >
             <Box

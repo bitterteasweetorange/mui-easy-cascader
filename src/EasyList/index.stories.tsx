@@ -27,11 +27,19 @@ export const Defalut = () => {
       <EasyList<MockObject>
         data={mockObjectNodes}
         getNodeLabel={(node) => node.name}
-        endAdornment={(node) => node.age && <Chip label={node.age} />}
+        endAdornment={(node) =>
+          node.age && (
+            <Chip
+              size="small"
+              label={node.age}
+            />
+          )
+        }
         search={search}
-        setSearch={setSearch}
         selectedId={selectedId}
-        setSelectedId={setSelectedId}
+        onSelect={(id) => {
+          setSelectedId(id)
+        }}
       />
     </>
   )
