@@ -6,7 +6,7 @@ import { EasyCascader } from '.'
 import { MockObject, mockObjectNodes } from '../mock'
 
 const meta = {
-  title: 'EasyCascader',
+  title: 'component/EasyCascader',
   component: EasyCascader,
 } satisfies Meta<typeof EasyCascader>
 

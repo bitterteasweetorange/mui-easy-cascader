@@ -1,5 +1,12 @@
-import { Box, MenuItem, MenuList, Paper, Typography } from '@mui/material'
-import { Fragment } from 'react'
+import {
+  Box,
+  MenuItem,
+  MenuList,
+  Paper,
+  Typography,
+  useTheme,
+} from '@mui/material'
+import { ForwardedRef, Fragment, forwardRef, useImperativeHandle } from 'react'
 import { EasyHighlight } from 'src/EasyHighlight'
 import {
   EasyCascaderBaseNode,
@@ -11,10 +18,20 @@ export type EasyListProps<T extends EasyCascaderBaseNode> = {
   search: string
   selectedId: EasyId | null
   onSelect: (id: EasyId | null) => void
+  hoverId?: EasyId | null
 } & EasyCascaderDuplicatedProps<T>
 
-export function EasyList<T extends EasyCascaderBaseNode>(
+export type EasyListRefObject<T> = { filterData: T[] }
+
+export const EasyList = forwardRef(EasyListRaw) as <
+  T extends EasyCascaderBaseNode,
+>(
+  props: EasyListProps<T> & { ref?: ForwardedRef<EasyListRefObject<T>> },
+) => JSX.Element
+
+function EasyListRaw<T extends EasyCascaderBaseNode>(
   props: EasyListProps<T>,
+  ref: ForwardedRef<EasyListRefObject<T>>,
 ) {
   const {
     data,
@@ -24,17 +41,34 @@ export function EasyList<T extends EasyCascaderBaseNode>(
     getNodeLabel,
     selectedId,
     onSelect,
+    hoverId,
   } = props
+
+  const { palette } = useTheme()
+  const filterData = filterKeywordLastNodes(data, getNodeLabel, search)
+  useImperativeHandle(
+    ref,
+    () => {
+      return {
+        filterData,
+      }
+    },
+    [filterData],
+  )
 
   return (
     <Paper>
       <MenuList>
-        {filterKeywordLastNodes(data, getNodeLabel, search).map((node) => (
+        {filterData.map((node) => (
           <MenuItem
             selected={node.id === selectedId}
             key={node.id}
             onClick={() => {
               onSelect(node.id)
+            }}
+            sx={{
+              background:
+                hoverId === node.id ? palette.action.hover : undefined,
             }}
           >
             <Box

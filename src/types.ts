@@ -1,17 +1,5 @@
 import { ReactNode } from 'react'
 
-export type EasyCascaderInputProps<T extends EasyCascaderBaseNode> =
-  EasyCascaderDuplicatedProps<T> & {
-    value: T | null
-    onChange: (value: T | null) => void
-    label?: ReactNode
-    error?: boolean
-    helperText?: ReactNode
-    required?: boolean
-    disabled?: boolean
-    displayPath?: boolean
-  }
-
 export type EasyId = number | string
 export type EasyCascaderBaseNode = {
   id: EasyId
