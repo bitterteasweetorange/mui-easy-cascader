@@ -1,9 +1,10 @@
 import { Box, TextField } from '@mui/material'
 import { ReactNode, RefObject, useMemo, useRef, useState } from 'react'
 import { EasyCascader } from 'src/EasyCascader'
-import { EasyList, EasyListRefObject } from 'src/EasyList'
+import { EasyKeyboardRefObject, EasyList } from 'src/EasyList'
 import { EasyPopper } from 'src/EasyPopper'
 import { useDebounce } from 'use-debounce'
+import { keyboardEvent } from '../EasyList/keyboardEvent'
 import {
   EasyCascaderBaseNode,
   EasyCascaderDuplicatedProps,
@@ -60,17 +61,18 @@ export function EasyCascaderInput<
 
   const { getNodeLabel, data } = duplication
 
-  const [selectedId, setSelectedId] = useState<EasyId | null>(
-    idAsValue ? value : value?.id ?? null,
-  )
+  const defaultSelectedId = idAsValue ? value : value?.id ?? null
+
+  const [selectedId, setSelectedId] = useState<EasyId | null>(defaultSelectedId)
 
   const onSelect = (id: EasyId | null) => {
+    if (id === null) return
     const node = data.find((node) => node.id === id)
     if (!node) return
     const isLeaf = node?.childrenId?.length === 0 || !node?.childrenId
 
     setSelectedId(id)
-    setHoverId(null)
+    setHoverId(id)
     if (isLeaf) {
       setFocused(false)
       if (idAsValue) {
@@ -84,7 +86,7 @@ export function EasyCascaderInput<
       setSelectedId(id)
     }
   }
-  const [hoverId, setHoverId] = useState<EasyId | null>(null)
+  const [hoverId, setHoverId] = useState<EasyId | null>(defaultSelectedId)
 
   const textValue = useMemo(() => {
     if (value === null) return ''
@@ -102,31 +104,34 @@ export function EasyCascaderInput<
     return text
   }, [data, selectedId, getNodeLabel, value, displayPath])
 
-  const ref = useRef<EasyListRefObject<OptionT> | null>(null)
+  const listRef = useRef<EasyKeyboardRefObject<OptionT> | null>(null)
+  const cascaderRef = useRef<EasyKeyboardRefObject<OptionT> | null>(null)
 
   return (
     <>
       <TextField
         onKeyDown={(e) => {
           if (!focused) return
-          // for EasyList
-          const filterData = ref.current?.filterData || []
-          const index = filterData.findIndex((node) => node.id === hoverId)
-          switch (e.key) {
-            case 'Enter':
-              onSelect(hoverId)
-              return
-            case 'ArrowDown':
-              setHoverId(filterData[index + 1]?.id ?? filterData[0]?.id)
-              return
-            case 'ArrowUp':
-              setHoverId(
-                filterData[index - 1]?.id ??
-                  filterData[filterData.length - 1]?.id,
-              )
-              return
-            default:
-              return
+
+          const isEasyList = !!debouncedSearch
+          if (isEasyList) {
+            // for EasyList
+            const id = keyboardEvent(
+              e,
+              listRef.current?.filterData || [],
+              hoverId,
+              setHoverId,
+            )
+            onSelect(id)
+          } else {
+            // for EasyCascader
+            const id = keyboardEvent(
+              e,
+              cascaderRef.current?.filterData || [],
+              hoverId,
+              setHoverId,
+            )
+            onSelect(id)
           }
         }}
         focused={focused}
@@ -165,12 +170,15 @@ export function EasyCascaderInput<
               selectedId={selectedId}
               hoverId={hoverId}
               onSelect={onSelect}
+              ref={listRef}
             />
           ) : (
             <EasyCascader<OptionT>
               {...duplication}
               selectedId={selectedId}
+              hoverId={hoverId}
               setSelectedId={onSelect}
+              ref={cascaderRef}
             />
           )}
         </Box>

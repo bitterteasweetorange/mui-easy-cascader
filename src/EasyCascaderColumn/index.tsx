@@ -1,6 +1,12 @@
 import { KeyboardArrowRight } from '@mui/icons-material'
-import { ListItemText, MenuItem, MenuList, Paper } from '@mui/material'
-import { EasyCascaderProps, EasyCascaderBaseNode, EasyId } from 'src/types'
+import {
+  ListItemText,
+  MenuItem,
+  MenuList,
+  Paper,
+  useTheme,
+} from '@mui/material'
+import { EasyCascaderBaseNode, EasyCascaderProps, EasyId } from 'src/types'
 
 export function EasyCascaderColumn<T extends EasyCascaderBaseNode>({
   ids,
@@ -10,16 +16,19 @@ export function EasyCascaderColumn<T extends EasyCascaderBaseNode>({
   endAdornment,
   startAdornment,
   getNodeLabel,
+  hoverId,
 }: {
   ids: EasyId[]
   activedId?: EasyId | null
   onNodeClick: (node: T, selected: boolean) => void
+  hoverId?: EasyId | null
 } & Pick<
   EasyCascaderProps<T>,
   'getNodeLabel' | 'startAdornment' | 'endAdornment' | 'data'
 >) {
   const currentNodes = data.filter((node) => ids.includes(node.id))
 
+  const { palette } = useTheme()
   return (
     <Paper>
       <MenuList>
@@ -31,6 +40,12 @@ export function EasyCascaderColumn<T extends EasyCascaderBaseNode>({
               selected={selected}
               onClick={() => {
                 onNodeClick(node, selected)
+              }}
+              sx={{
+                background:
+                  hoverId === node.id && !selected
+                    ? palette.action.hover
+                    : undefined,
               }}
             >
               <ListItemText

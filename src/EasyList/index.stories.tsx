@@ -1,9 +1,10 @@
 import { Chip, TextField } from '@mui/material'
 import type { Meta } from '@storybook/react'
-import { useRef, useState } from 'react'
-import { EasyList, EasyListRefObject } from '.'
-import { MockObject, mockObjectNodes } from '../mock'
+import { useEffect, useRef, useState } from 'react'
 import { EasyId } from 'src/types'
+import { EasyKeyboardRefObject, EasyList } from '.'
+import { MockObject, mockObjectNodes } from '../mock'
+import { keyboardEvent } from './keyboardEvent'
 
 const meta = {
   title: 'component/EasyList',
@@ -45,47 +46,30 @@ export const Defalut = () => {
   )
 }
 
-export const Hover = () => {
-  const [search, setSearch] = useState('')
+export const Keyboard = () => {
   const [selectedId, setSelectedId] = useState<EasyId | null>(0)
   const [hoverId, setHoverId] = useState<EasyId | null>(null)
-  const ref = useRef<EasyListRefObject<MockObject> | null>(null)
+  const ref = useRef<EasyKeyboardRefObject<MockObject> | null>(null)
+
+  useEffect(() => {
+    const handleKeyPress = (e: any) => {
+      keyboardEvent(e, ref, hoverId, setHoverId, setSelectedId)
+    }
+    window.addEventListener('keydown', handleKeyPress)
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress)
+    }
+  }, [hoverId])
 
   return (
     <>
-      <TextField
-        autoComplete="off"
-        value={search}
-        onChange={(e) => {
-          setSearch(e.target.value)
-        }}
-        onKeyDown={(e) => {
-          const filterData = ref.current?.filterData || []
-          const index = filterData.findIndex((node) => node.id === hoverId)
-          switch (e.key) {
-            case 'Enter':
-              setSelectedId(hoverId)
-              return
-            case 'ArrowDown':
-              setHoverId(filterData[index + 1]?.id ?? filterData[0]?.id)
-              return
-            case 'ArrowUp':
-              setHoverId(
-                filterData[index - 1]?.id ??
-                  filterData[filterData.length - 1]?.id,
-              )
-              return
-            default:
-              return
-          }
-        }}
-      />
+      press keyboard "Up" / "Down" / "Enter"
       <EasyList<MockObject>
+        search=""
         ref={ref}
         hoverId={hoverId}
         data={mockObjectNodes}
         getNodeLabel={(node) => node.name}
-        search={search}
         selectedId={selectedId}
         onSelect={(id) => {
           setSelectedId(id)

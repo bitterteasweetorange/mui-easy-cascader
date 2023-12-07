@@ -6,7 +6,13 @@ import {
   Typography,
   useTheme,
 } from '@mui/material'
-import { ForwardedRef, Fragment, forwardRef, useImperativeHandle } from 'react'
+import {
+  ForwardedRef,
+  Fragment,
+  forwardRef,
+  useImperativeHandle,
+  useMemo,
+} from 'react'
 import { EasyHighlight } from 'src/EasyHighlight'
 import {
   EasyCascaderBaseNode,
@@ -21,17 +27,17 @@ export type EasyListProps<T extends EasyCascaderBaseNode> = {
   hoverId?: EasyId | null
 } & EasyCascaderDuplicatedProps<T>
 
-export type EasyListRefObject<T> = { filterData: T[] }
+export type EasyKeyboardRefObject<T> = { filterData: T[] }
 
 export const EasyList = forwardRef(EasyListRaw) as <
   T extends EasyCascaderBaseNode,
 >(
-  props: EasyListProps<T> & { ref?: ForwardedRef<EasyListRefObject<T>> },
+  props: EasyListProps<T> & { ref?: ForwardedRef<EasyKeyboardRefObject<T>> },
 ) => JSX.Element
 
 function EasyListRaw<T extends EasyCascaderBaseNode>(
   props: EasyListProps<T>,
-  ref: ForwardedRef<EasyListRefObject<T>>,
+  ref: ForwardedRef<EasyKeyboardRefObject<T>>,
 ) {
   const {
     data,
@@ -45,7 +51,10 @@ function EasyListRaw<T extends EasyCascaderBaseNode>(
   } = props
 
   const { palette } = useTheme()
-  const filterData = filterKeywordLastNodes(data, getNodeLabel, search)
+  const filterData = useMemo(
+    () => filterKeywordLastNodes(data, getNodeLabel, search),
+    [data, getNodeLabel, search],
+  )
   useImperativeHandle(
     ref,
     () => {

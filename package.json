@@ -1,6 +1,6 @@
 {
   "name": "mui-easy-cascader",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "types": "dist/src/index.d.ts",
@@ -24,7 +24,7 @@
     "dev": "rm -rf dist/ && rollup -c -w",
     "storybook": "storybook dev -p 6006",
     "test": "pnpm exec playwright test",
-    "test-ct": "playwright test -c playwright-ct.config.ts"
+    "test:ui": "pnpm exec playwright test --ui"
   },
   "author": "orange",
   "description": "cascader based on MUI",
@@ -47,8 +47,7 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.14.0",
-    "@playwright/experimental-ct-react": "^1.37.0",
-    "@playwright/test": "^1.37.0",
+    "@playwright/test": "^1.40.1",
     "@rollup/plugin-babel": "^6.0.3",
     "@rollup/plugin-commonjs": "^25.0.0",
     "@rollup/plugin-node-resolve": "^15.1.0",
@@ -90,7 +89,7 @@
     "react-dom": ">=16.8"
   },
   "dependencies": {
-    "use-debounce": "^9.0.4",
-    "@mui/icons-material": "^5.14.0"
+    "@mui/icons-material": "^5.14.0",
+    "use-debounce": "^9.0.4"
   }
 }

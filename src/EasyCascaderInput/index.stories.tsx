@@ -44,7 +44,7 @@ export const IdAsValue = () => {
 }
 
 export const DisplayPath = () => {
-  const [value, onChange] = useState<MockObject | null>(mockObjectNodes[2])
+  const [value, onChange] = useState<MockObject | null>(mockObjectNodes[1])
 
   return (
     <EasyCascaderInput<MockObject>

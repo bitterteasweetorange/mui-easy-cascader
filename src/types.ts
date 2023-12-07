@@ -18,4 +18,5 @@ export type EasyCascaderProps<T extends EasyCascaderBaseNode> =
   EasyCascaderDuplicatedProps<T> & {
     selectedId: EasyId | null
     setSelectedId: (id: EasyId | null) => void
+    hoverId?: EasyId | null
   }

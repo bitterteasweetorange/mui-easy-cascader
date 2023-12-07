@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test'
 
-const path = '/iframe.html?id=cascaderinput--defalut&viewMode=story'
+const path = '/iframe.html?id=easycascaderinput--defalut&viewMode=story'
+
 test('default value', async ({ page }) => {
   await page.goto(path)
 
