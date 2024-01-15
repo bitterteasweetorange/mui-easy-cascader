@@ -7,11 +7,12 @@ import { EasyCascaderBaseNode, EasyCascaderProps, EasyId } from '../types'
 export const EasyCascader = forwardRef(EasyCascaderRaw) as <
   T extends EasyCascaderBaseNode,
 >(
-  props: EasyCascaderProps<T>,
-  ref?: ForwardedRef<EasyKeyboardRefObject<T>>,
+  props: EasyCascaderProps<T> & {
+    ref?: ForwardedRef<EasyKeyboardRefObject<T>>
+  },
 ) => JSX.Element
 
-export function EasyCascaderRaw<T extends EasyCascaderBaseNode>(
+function EasyCascaderRaw<T extends EasyCascaderBaseNode>(
   props: EasyCascaderProps<T>,
   ref?: ForwardedRef<EasyKeyboardRefObject<T>>,
 ) {

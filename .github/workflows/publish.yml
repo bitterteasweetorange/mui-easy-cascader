@@ -5,7 +5,7 @@ on:
       - master
 
 jobs:
-  deploy:
+  depoly:
     runs-on: ubuntu-latest
 
     steps:
@@ -35,12 +35,12 @@ jobs:
         run: pnpm install
 
       - name: Install Playwright Browsers
-      - npx playwright install --with-deps
+        run: npx playwright install --with-deps
 
       - name: Test
         run: pnpm test
-      
-      - uses actions/upload-artifact@v3
+
+      - uses: actions/upload-artifact@v3
         if: always()
         with:
           name: playwright-report

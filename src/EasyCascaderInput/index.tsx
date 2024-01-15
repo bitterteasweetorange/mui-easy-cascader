@@ -59,14 +59,11 @@ export function EasyCascaderInput<OptionT extends EasyCascaderBaseNode>(
     setSelectedId(id)
     setHoverId(id)
     if (isLeaf) {
-      setFocused(false)
-
       onChange(node)
+      setFocused(false)
       setIsSearch(false)
-      setSearch('')
-    } else {
-      setSelectedId(id)
     }
+    setSearch('')
   }
   const [hoverId, setHoverId] = useState<EasyId | null>(defaultSelectedId)
 
