@@ -53,7 +53,7 @@ export const Keyboard = () => {
 
   useEffect(() => {
     const handleKeyPress = (e: any) => {
-      keyboardEvent(e, ref, hoverId, setHoverId, setSelectedId)
+      keyboardEvent(e, ref.current?.filterData || [], hoverId, setHoverId)
     }
     window.addEventListener('keydown', handleKeyPress)
     return () => {

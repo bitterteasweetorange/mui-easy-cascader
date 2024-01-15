@@ -11,7 +11,7 @@ import {
   EasyId,
 } from '../types'
 
-type Base<OptionT extends EasyCascaderBaseNode> =
+export type EasyCascaderInputProps<OptionT extends EasyCascaderBaseNode> =
   EasyCascaderDuplicatedProps<OptionT> & {
     label?: ReactNode
     error?: boolean
@@ -19,27 +19,13 @@ type Base<OptionT extends EasyCascaderBaseNode> =
     required?: boolean
     disabled?: boolean
     displayPath?: boolean
+    value: OptionT | null
+    onChange: (value: OptionT | null) => void
   }
 
-type ValueIsId<OptionT extends EasyCascaderBaseNode> = Base<OptionT> & {
-  idAsValue: true
-  value: EasyId | null
-  onChange: (value: EasyId | null) => void
-}
-type ValueIsOptionT<OptionT extends EasyCascaderBaseNode> = Base<OptionT> & {
-  idAsValue?: false
-  value: OptionT | null
-  onChange: (value: OptionT | null) => void
-}
-export type EasyCascaderInputProps<
-  OptionT extends EasyCascaderBaseNode,
-  IdAsValue extends boolean = false,
-> = IdAsValue extends true ? ValueIsId<OptionT> : ValueIsOptionT<OptionT>
-
-export function EasyCascaderInput<
-  OptionT extends EasyCascaderBaseNode,
-  IdAsValue extends boolean = false,
->(props: EasyCascaderInputProps<OptionT, IdAsValue>) {
+export function EasyCascaderInput<OptionT extends EasyCascaderBaseNode>(
+  props: EasyCascaderInputProps<OptionT>,
+) {
   const [isSearch, setIsSearch] = useState<boolean>(false)
   const [search, setSearch] = useState<string>('')
 
@@ -55,13 +41,12 @@ export function EasyCascaderInput<
     required,
     helperText,
     displayPath,
-    idAsValue,
     ...duplication
   } = props
 
   const { getNodeLabel, data } = duplication
 
-  const defaultSelectedId = idAsValue ? value : value?.id ?? null
+  const defaultSelectedId = value?.id ?? null
 
   const [selectedId, setSelectedId] = useState<EasyId | null>(defaultSelectedId)
 
@@ -75,11 +60,8 @@ export function EasyCascaderInput<
     setHoverId(id)
     if (isLeaf) {
       setFocused(false)
-      if (idAsValue) {
-        onChange(node.id)
-      } else {
-        onChange(node)
-      }
+
+      onChange(node)
       setIsSearch(false)
       setSearch('')
     } else {
@@ -144,7 +126,7 @@ export function EasyCascaderInput<
         onFocus={() => {
           setFocused(true)
           setIsSearch(true)
-          setSelectedId(idAsValue ? value : value?.id ?? null)
+          setSelectedId(value?.id ?? null)
         }}
         ref={anchorRef}
         placeholder={isSearch && value ? textValue : ''}
