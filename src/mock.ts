@@ -16,7 +16,6 @@ export const mockObjectNodes: MockObject[] = [
     id: 1,
     name: 'children-0',
     pathId: [0],
-    childrenId: [5],
   },
   {
     id: 2,
@@ -32,10 +31,5 @@ export const mockObjectNodes: MockObject[] = [
   {
     id: 3,
     name: 'parent-1',
-  },
-  {
-    id: 5,
-    name: 'leaf',
-    pathId: [0, 1],
   },
 ]

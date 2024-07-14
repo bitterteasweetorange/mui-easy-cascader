@@ -54,6 +54,7 @@
     "@rollup/plugin-terser": "^0.4.3",
     "@rollup/plugin-typescript": "^11.1.1",
     "@storybook/addon-essentials": "^7.6.8",
+    "@storybook/addon-docs": "^7.6.8",
     "@storybook/addon-interactions": "^7.6.8",
     "@storybook/addon-links": "^7.6.8",
     "@storybook/blocks": "^7.6.8",
