@@ -28,7 +28,6 @@ export default defineConfig([
         'plugin:react-hooks/recommended',
         'plugin:jest-dom/recommended',
         'plugin:storybook/recommended',
-        'prettier',
       ),
     ),
 
@@ -50,6 +49,11 @@ export default defineConfig([
       },
     },
 
-    rules: {},
+    rules: {
+      eqeqeq: 'error',
+      'react-hooks/exhaustive-deps': 'error',
+      'max-depth': 'error',
+      'max-lines': 'warn',
+    },
   },
 ])

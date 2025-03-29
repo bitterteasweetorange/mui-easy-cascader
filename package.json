@@ -1,16 +1,12 @@
 {
-  "name": "vite-react-component-library-starter",
-  "private": true,
-  "version": "0.0.0",
-  "description": "A template for creating React component libraries with Vite and Storybook.",
-  "author": "rayyamhk",
+  "name": "mui-easy-cascader",
+  "version": "0.5.0",
+  "description": "cascader based on MUI",
+  "author": "orange",
   "license": "MIT",
   "type": "module",
   "files": [
     "dist"
-  ],
-  "sideEffects": [
-    "**/*.css"
   ],
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -25,8 +21,7 @@
         "types": "./dist/index.d.ts",
         "default": "./dist/index.cjs"
       }
-    },
-    "./css": "./dist/style.css"
+    }
   },
   "scripts": {
     "dev": "storybook dev -p 6006",
@@ -57,7 +52,6 @@
     "@vitest/coverage-v8": "^3.0.9",
     "clsx": "^2.1.1",
     "eslint": "^9.23.0",
-    "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-jest-dom": "^5.5.0",
     "eslint-plugin-react": "^7.37.4",
     "eslint-plugin-react-hooks": "^5.2.0",
