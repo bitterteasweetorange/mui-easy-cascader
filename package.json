@@ -72,9 +72,19 @@
     "typescript": "^5.8.2",
     "vite": "^6.2.3",
     "vite-plugin-dts": "^4.5.3",
-    "vitest": "^3.0.9"
+    "vitest": "^3.0.9",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@fontsource/roboto": "^5.2.5",
+    "@mui/icons-material": "^7.0.1",
+    "@mui/material": "^7.0.1"
   },
   "peerDependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@fontsource/roboto": "^5.2.5",
+    "@mui/icons-material": "^7.0.1",
+    "@mui/material": "^7.0.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   }

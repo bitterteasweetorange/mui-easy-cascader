@@ -1,3 +1,4 @@
+import { Button as MuiButton } from '@mui/material'
 import React from 'react'
 
 export interface ButtonProps
@@ -15,7 +16,7 @@ export interface ButtonProps
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ ...rest }, ref) => (
-    <button
+    <MuiButton
       ref={ref}
       {...rest}
     />
