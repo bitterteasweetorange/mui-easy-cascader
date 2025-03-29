@@ -32,6 +32,11 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier . --write --ignore-unknown"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bitterteasweetorange/mui-easy-cascader/"
+  },
+  "homepage": "https://bitterteasweetorange.github.io/mui-easy-cascader/?path=/story/input-cascaderinput--defalut",
   "devDependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
