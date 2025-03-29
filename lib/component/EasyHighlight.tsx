@@ -8,9 +8,18 @@ const StyledMark = styled('mark')<{ focused?: boolean }>(({ focused }) => ({
 }))
 
 export interface EasyHighlightProps {
-  search?: string
-  focused?: boolean
+  /**
+   * text that will be shown
+   */
   text: string
+  /**
+   * keyword for highlight
+   */
+  search?: string
+  /**
+   * style will be different when focused is true
+   */
+  focused?: boolean
 }
 
 export function EasyHighlight(props: EasyHighlightProps) {

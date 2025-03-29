@@ -1,1 +1,2 @@
-export * from './EasyPopper'
+export * from './component'
+export * from './utils'

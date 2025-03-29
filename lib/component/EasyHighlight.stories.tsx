@@ -2,8 +2,18 @@ import { Meta, StoryObj } from '@storybook/react'
 import { EasyHighlight, EasyHighlightProps } from '.'
 
 const meta = {
-  title: 'Components/EasyHighlight',
+  title: 'Component/EasyHighlight',
   component: EasyHighlight,
+  args: {
+    focused: false,
+  },
+  argTypes: {
+    focused: {
+      table: {
+        defaultValue: { summary: 'false' },
+      },
+    },
+  },
 } satisfies Meta<typeof EasyHighlight>
 
 export default meta
