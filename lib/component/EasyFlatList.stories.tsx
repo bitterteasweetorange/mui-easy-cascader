@@ -4,11 +4,11 @@ import type { Meta, StoryObj } from '@storybook/react'
 import React from 'react'
 import { MockShape, mockNodes } from '../utils/mock'
 import { EasyId } from '../utils/types'
-import { EasyList, EasyListProps } from './EasyList'
+import { EasyFlatList, EasyFlatListProps } from './EasyFlatList'
 
 const meta = {
-  title: 'component/EasyList',
-  component: EasyList,
+  title: 'component/EasyFlatList',
+  component: EasyFlatList,
   args: {
     data: mockNodes,
     getNodeLabel: (node: MockShape) => node.name,
@@ -49,51 +49,57 @@ const meta = {
       },
     },
   },
-} satisfies Meta<EasyListProps<MockShape>>
+} satisfies Meta<EasyFlatListProps<MockShape>>
 
 export default meta
 
-type Story = StoryObj<EasyListProps<MockShape>>
+type Story = StoryObj<EasyFlatListProps<MockShape>>
 
 export const Defalut: Story = {}
 
 export const Search: Story = {
   args: {
-    search: '1',
+    search: '0',
   },
 }
 
 export const Adornment: Story = {
   args: {
-    endAdornment: (node) => {
+    endAdornment: (node, _, isLeaf) => {
       if (!node.age) return null
+      if (!isLeaf) return null
       return (
         <Chip
+          color="success"
           size="small"
           label={node.age}
         />
       )
     },
-    startAdornment: (node) => {
-      if (node.name !== 'parent-1') return null
-      return <StarOutline color="error" />
+    startAdornment: (_, depth) => {
+      if (depth === 1) return <StarOutline color="error" />
+      return null
     },
   },
 }
 
 export const Select: Story = {
-  render: (args: Partial<EasyListProps<MockShape>>) => {
-    const [selectedId, setSelectedId] = React.useState<EasyId | null>(1)
+  render: (args: Partial<EasyFlatListProps<MockShape>>) => {
+    const [selectedId, setSelectedId] = React.useState<EasyId | null>(2)
+    const selectedNode = args.data?.find((node) => node.id === selectedId)
 
     return (
-      <EasyList<MockShape>
-        data={args.data || mockNodes}
-        getNodeLabel={(node) => node.name}
-        selectedId={selectedId}
-        onSelect={(id) => {
-          setSelectedId(id)
-        }}
-      />
+      <>
+        you select: {selectedNode?.name}
+        <EasyFlatList<MockShape>
+          data={args.data || mockNodes}
+          getNodeLabel={(node) => node.name}
+          selectedId={selectedId}
+          onSelect={(id) => {
+            setSelectedId(id)
+          }}
+        />
+      </>
     )
   },
 }

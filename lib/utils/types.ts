@@ -22,12 +22,18 @@ export type EasyCascaderDuplicatedProps<T> = {
   getNodeLabel: (node: T) => string
   /**
    * start input adornment for the list
+   * @param:
+   * depth starts from 0
+   * isLeaf is true if the node is a leaf node
    */
-  startAdornment?: (node: T) => ReactNode
+  startAdornment?: (node: T, depth: number, isLeaf: boolean) => ReactNode
   /**
    * end input adornment for the list
+   * @param:
+   * depth starts from 0
+   * isLeaf is true if the node is a leaf node
    */
-  endAdornment?: (node: T) => ReactNode
+  endAdornment?: (node: T, depth: number, isLeaf: boolean) => ReactNode
 }
 
 export type EasyCascaderProps<T extends EasyCascaderBaseNode> =
