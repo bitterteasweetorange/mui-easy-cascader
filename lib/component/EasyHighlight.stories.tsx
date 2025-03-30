@@ -6,6 +6,8 @@ const meta = {
   component: EasyHighlight,
   args: {
     focused: false,
+    search: 'orange',
+    text: 'sweet orange',
   },
   argTypes: {
     focused: {
@@ -20,17 +22,10 @@ export default meta
 
 type Story = StoryObj<EasyHighlightProps>
 
-export const Default: Story = {
-  args: {
-    search: 'orange',
-    text: 'sweet orange',
-  },
-}
+export const Default: Story = {}
 
 export const Focus: Story = {
   args: {
-    search: 'orange',
-    text: 'sweet orange',
     focused: true,
   },
 }

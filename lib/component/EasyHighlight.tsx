@@ -15,7 +15,7 @@ export interface EasyHighlightProps {
   /**
    * keyword for highlight
    */
-  search?: string
+  search?: string | null
   /**
    * style will be different when focused is true
    */

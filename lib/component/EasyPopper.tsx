@@ -1,5 +1,5 @@
 import { Box, ClickAwayListener, Grow, Popper } from '@mui/material'
-import React, { type ReactElement } from 'react'
+import { type ReactElement } from 'react'
 
 export type EasyPopperProps = {
   /**
@@ -9,11 +9,7 @@ export type EasyPopperProps = {
   /**
    * this determines which anchor prop to refer to when setting the position of the popper
    * */
-  anchorRef: React.RefObject<HTMLButtonElement | null>
-  /**
-   * if true, the popper is shown
-   * */
-  open: boolean
+  anchorEl: HTMLElement | null
   /**
    * callback fired when the component requests to be closed
    * */
@@ -21,20 +17,14 @@ export type EasyPopperProps = {
 }
 export function EasyPopper({
   children,
-  anchorRef,
+  anchorEl: anchorEl,
   onClose,
-  open,
 }: EasyPopperProps) {
-  const handleClose = (event: Event | React.SyntheticEvent) => {
-    if (
-      anchorRef.current &&
-      anchorRef.current.contains(event.target as HTMLElement)
-    ) {
-      return
-    }
-
+  const handleClose = () => {
     onClose()
   }
+
+  const open = Boolean(anchorEl)
 
   return (
     <Popper
@@ -42,7 +32,7 @@ export function EasyPopper({
         zIndex: 1000,
       }}
       open={open}
-      anchorEl={anchorRef.current}
+      anchorEl={anchorEl}
       transition
       disablePortal
       placement="bottom-start"

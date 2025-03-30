@@ -1,11 +1,11 @@
-export type MockObject = {
+export type MockShape = {
   id: number
   name: string
   age?: number
   childrenId?: number[]
   pathId?: number[]
 }
-export const mockObjectNodes: MockObject[] = [
+export const mockNodes: MockShape[] = [
   {
     id: 0,
     name: 'parent-0',
@@ -24,12 +24,12 @@ export const mockObjectNodes: MockObject[] = [
     age: 10,
   },
   {
-    id: 4,
+    id: 3,
     name: 'children-2',
     pathId: [0],
   },
   {
-    id: 3,
+    id: 4,
     name: 'parent-1',
   },
 ]

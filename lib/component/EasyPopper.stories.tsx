@@ -6,44 +6,28 @@ import { EasyPopper, EasyPopperProps } from '.'
 const meta = {
   title: 'Component/EasyPopper',
   component: EasyPopper,
-  args: {
-    open: false,
-  },
-  argTypes: {
-    open: {
-      control: 'boolean',
-      table: {
-        defaultValue: { summary: 'false' },
-      },
-    },
-  },
 } satisfies Meta<typeof EasyPopper>
 
 export default meta
 
 type Story = StoryObj<EasyPopperProps>
 
-export const X: Story = {
-  render: (args: Partial<EasyPopperProps>) => {
-    const [open, setOpen] = useState(false)
-    const anchorRef = React.useRef<HTMLButtonElement>(null)
+export const Defalut: Story = {
+  render: () => {
+    const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
+    const handleClick = (e: React.MouseEvent<HTMLElement>) => {
+      setAnchorEl(e.currentTarget)
+    }
+    const handleClose = () => {
+      setAnchorEl(null)
+    }
 
     return (
       <>
-        <Button
-          ref={anchorRef}
-          onClick={() => {
-            setOpen(true)
-          }}
-        >
-          open
-        </Button>
+        <Button onClick={handleClick}>open</Button>
         <EasyPopper
-          anchorRef={anchorRef}
-          open={args.open || open}
-          onClose={() => {
-            setOpen(false)
-          }}
+          anchorEl={anchorEl}
+          onClose={handleClose}
         >
           <Paper
             sx={{
