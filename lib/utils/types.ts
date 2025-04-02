@@ -11,7 +11,7 @@ export type EasyCascaderBaseNode = {
   pathId?: EasyId[]
 }
 
-export type EasyCascaderDuplicatedProps<T> = {
+export type EasyCascaderCommonProps<T> = {
   /**
    * all nodes data
    */
@@ -35,10 +35,3 @@ export type EasyCascaderDuplicatedProps<T> = {
    */
   endAdornment?: (node: T, depth: number, isLeaf: boolean) => ReactNode
 }
-
-export type EasyCascaderProps<T extends EasyCascaderBaseNode> =
-  EasyCascaderDuplicatedProps<T> & {
-    selectedId: EasyId | null
-    setSelectedId: (id: EasyId | null) => void
-    hoverId?: EasyId | null
-  }

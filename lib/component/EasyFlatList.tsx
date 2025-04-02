@@ -1,8 +1,8 @@
 import { Box, MenuItem, MenuList, Paper, Typography } from '@mui/material'
-import { Fragment, useMemo } from 'react'
+import { useMemo } from 'react'
 import type {
   EasyCascaderBaseNode,
-  EasyCascaderDuplicatedProps,
+  EasyCascaderCommonProps,
   EasyId,
 } from '../utils/types'
 import { EasyHighlight } from './EasyHighlight'
@@ -19,23 +19,30 @@ export type EasyFlatListProps<T extends EasyCascaderBaseNode> = {
   /**
    * callback when select a node
    */
-  onSelect?: (id: EasyId | null) => void
-} & EasyCascaderDuplicatedProps<T>
+  onSelect?: (node: T | null) => void
+  /**
+   * if true, will focus the selected item to enable keyboard navigation
+   */
+  autoFocusItem?: boolean
+} & EasyCascaderCommonProps<T>
 
 export function EasyFlatList<T extends EasyCascaderBaseNode>(
   props: EasyFlatListProps<T>,
 ) {
   const {
+    // common props
     data,
-    endAdornment,
-    startAdornment,
-    search,
     getNodeLabel,
+    startAdornment,
+    endAdornment,
+    // other
     selectedId,
     onSelect,
+    search,
+    autoFocusItem,
   } = props
 
-  const displayNodes = useMemo(() => {
+  const lineNodes = useMemo(() => {
     const leafNodes = data.filter((node) => isLeafNode(node))
     if (search === null || search === undefined || search === '')
       return leafNodes
@@ -44,13 +51,13 @@ export function EasyFlatList<T extends EasyCascaderBaseNode>(
 
   return (
     <Paper>
-      <MenuList>
-        {displayNodes.map((leafNode) => (
+      <MenuList autoFocusItem={autoFocusItem}>
+        {lineNodes.map((leafNode) => (
           <MenuItem
             selected={leafNode.id === selectedId}
             key={leafNode.id}
             onClick={() => {
-              onSelect?.(leafNode.id)
+              onSelect?.(leafNode)
             }}
           >
             <Box
@@ -68,11 +75,20 @@ export function EasyFlatList<T extends EasyCascaderBaseNode>(
                 if (!currentNode) return null
                 const text = getNodeLabel(currentNode)
                 return (
-                  <Fragment key={id}>
+                  <Box
+                    key={id}
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 1,
+                      flexGrow: 1,
+                    }}
+                  >
                     {startAdornment?.(currentNode, depth, isLeaf)}
                     <EasyHighlight
                       text={text}
                       search={search}
+                      focused={leafNode.id === selectedId}
                     ></EasyHighlight>
                     {endAdornment?.(currentNode, depth, isLeaf)}
                     {!isLeaf && (
@@ -83,7 +99,7 @@ export function EasyFlatList<T extends EasyCascaderBaseNode>(
                         {'/'}
                       </Typography>
                     )}
-                  </Fragment>
+                  </Box>
                 )
               })}
             </Box>
@@ -117,7 +133,6 @@ function filterKeywordLeafNodes<T extends EasyCascaderBaseNode>(
           nodes,
           node.id,
         )
-        console.log(leafNodeIds, allChildrenNodeIds)
 
         resIds = resIds.concat([...leafNodeIds])
         verifiedIds = verifiedIds.concat([...allChildrenNodeIds])

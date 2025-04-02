@@ -13,16 +13,27 @@ const meta = {
     data: mockNodes,
     getNodeLabel: (node: MockShape) => node.name,
     search: '',
+    autoFocusItem: false,
   },
   argTypes: {
     data: {
       table: {
-        category: 'required',
+        category: 'common props',
       },
     },
     getNodeLabel: {
       table: {
-        category: 'required',
+        category: 'common props',
+      },
+    },
+    endAdornment: {
+      table: {
+        category: 'common props',
+      },
+    },
+    startAdornment: {
+      table: {
+        category: 'common props',
       },
     },
     search: {
@@ -39,12 +50,13 @@ const meta = {
           summary: 'string | number | null',
         },
       },
-      control: 'number',
+      control: 'radio',
+      options: mockNodes.map((node) => node.id),
     },
     onSelect: {
       table: {
         type: {
-          summary: '(id: string | number | null) => void',
+          summary: '(node: T | null) => void',
         },
       },
     },
@@ -85,19 +97,21 @@ export const Adornment: Story = {
 
 export const Select: Story = {
   render: (args: Partial<EasyFlatListProps<MockShape>>) => {
-    const [selectedId, setSelectedId] = React.useState<EasyId | null>(2)
+    const [selectedId, setSelectedId] = React.useState<EasyId | null>(3)
     const selectedNode = args.data?.find((node) => node.id === selectedId)
 
     return (
       <>
         you select: {selectedNode?.name}
         <EasyFlatList<MockShape>
+          search="0"
           data={args.data || mockNodes}
           getNodeLabel={(node) => node.name}
           selectedId={selectedId}
-          onSelect={(id) => {
-            setSelectedId(id)
+          onSelect={(node) => {
+            setSelectedId(node?.id ?? null)
           }}
+          autoFocusItem
         />
       </>
     )

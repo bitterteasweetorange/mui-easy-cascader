@@ -29,7 +29,7 @@ export function EasyPopper({
   return (
     <Popper
       sx={{
-        zIndex: 1000,
+        zIndex: 2000,
       }}
       open={open}
       anchorEl={anchorEl}
