@@ -8,6 +8,14 @@ import { EasyCascaderInput, EasyCascaderInputProps } from './EasyCascaderInput'
 const meta = {
   title: 'EasyCascaderInput',
   component: EasyCascaderInput,
+
+  decorators: [
+    (StoryBase) => (
+      <div style={{ height: 250 }}>
+        <StoryBase />
+      </div>
+    ),
+  ],
   args: {
     data: mockNodes,
     getNodeLabel: (node: MockShape) => node.name,

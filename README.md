@@ -1,29 +1,54 @@
-## Features
+mui-easy-cascader is a cascading selection component library based on [Material UI](https://mui.com/material-ui/).
 
-- React: A JavaScript library for web and native user interfaces.
-- TypeScript: A strongly typed superset of JavaScript.
-- Storybook: A frontend workshop for building UI components and pages in isolation.
-- Vite: A next generation frontend tooling that runs and builds your library incredibly fast.
-- Vitest: A next generation testing framework.
-- ESLint: A tool that finds and fixes problems in your code.
-- Prettier: A code formatter.
-- Github Action: A tool that deploys your Storybook to GitHub page automatically.
+[Demo](https://bitterteasweetorange.github.io/mui-easy-cascader/?path=/story/easycascaderinput--defalut)
 
-## Get Started
+## Install
 
-1. Clone this repository
-2. Install dependencies using `pnpm i` (or `npm i` if you like)
+```
+npm install mui-easy-cascader
+```
 
-## Scripts
+## Usage
+
+```jsx
+<EasyCascaderInput<{
+    id:string,
+    name:string,
+    childrenId:string[]
+    pathId:string
+}>
+  data={[
+    {
+      id: "a",
+      name: "a",
+      childrenId: ["b"],
+    },
+    {
+      id: "b",
+      name: "b",
+      childrenId: ["c"],
+      pathId: ["a"]
+    },
+    {
+      id: "c",
+      name: "c",
+      pathId: ["a","b"]
+    },
+  ]}
+  getNodeLabel={(node) => node.name}
+  value={value}
+  onChange={onChange}
+/>
+```
+
+## Development
+
+### Scripts
 
 - `dev`: Starts the local Storybook server, use this to develop and preview your components.
 - `test`: Runs all your tests with vitest.
-- `test:watch`: Runs tests in watch mode.
+- `test:ui`: Runs tests in watch mode.
 - `build`: Builds your Storybook as a static web application.
 - `build:lib`: Builds your component library with Vite.
 - `lint`: Runs ESLint.
 - `format`: Formats your code with Prettier.
-
-## License
-
-MIT

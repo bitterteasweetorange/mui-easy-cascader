@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 
-const path = '/iframe.html?id=components-easyhighlight--'
+const path = '/iframe.html?id=component-easyhighlight--'
 
 test('highlight keyword', async ({ page }) => {
   await page.goto(path + 'default')

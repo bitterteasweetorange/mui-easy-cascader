@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 
-const path = '/iframe.html?id=components-easypopper--defalut'
+const path = '/iframe.html?id=component-easypopper--defalut'
 
 test('show popper', async ({ page }) => {
   await page.goto(path)

@@ -67,7 +67,7 @@ export default meta
 
 type Story = StoryObj<EasyFlatListProps<MockShape>>
 
-export const Defalut: Story = {}
+export const Default: Story = {}
 
 export const Search: Story = {
   args: {
