@@ -64,9 +64,6 @@ export function EasyFlatList<T extends EasyCascaderBaseNode>(
               sx={{
                 display: 'flex',
                 gap: 1,
-                '& div': {
-                  fontWeight: selectedId === leafNode.id ? 'bold' : 'normal',
-                },
               }}
             >
               {[...(leafNode.pathId || []), leafNode.id]?.map((id, depth) => {

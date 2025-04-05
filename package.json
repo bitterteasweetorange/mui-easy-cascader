@@ -1,6 +1,6 @@
 {
   "name": "mui-easy-cascader",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "cascader based on MUI",
   "author": "orange",
   "license": "MIT",
@@ -23,6 +23,12 @@
       }
     }
   },
+  "keywords": [
+    "MUI",
+    "TypeScript",
+    "React",
+    "StoryBook"
+  ],
   "scripts": {
     "dev": "storybook dev -p 6006",
     "test": "pnpm exec playwright test",

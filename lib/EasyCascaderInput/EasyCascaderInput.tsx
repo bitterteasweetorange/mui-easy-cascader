@@ -40,10 +40,6 @@ export type EasyCascaderInputProps<T extends EasyCascaderBaseNode> =
      */
     disabled?: boolean
     /**
-     * show the path of the selected node
-     */
-    displayPath?: boolean
-    /**
      * selected node, "id" is used to find the node in the data
      */
     value: T | null
@@ -64,7 +60,6 @@ export function EasyCascaderInput<T extends EasyCascaderBaseNode>(
   const {
     value,
     onChange,
-    displayPath,
     // for input
     label,
     error,
@@ -100,7 +95,17 @@ export function EasyCascaderInput<T extends EasyCascaderBaseNode>(
     if (open) return inputValue
     if (value === null) return ''
 
-    if (!displayPath) return getNodeLabel(value)
+    const text = [...(value.pathId || []), value.id]
+      ?.map((id) => {
+        const node = data.find((node) => node.id === id)
+        return node ? getNodeLabel(node) : ''
+      })
+      .join(' / ')
+    return text
+  }, [data, getNodeLabel, value, open, inputValue])
+
+  const displayPlaceholder = useMemo(() => {
+    if (value === null) return ''
 
     const text = [...(value.pathId || []), value.id]
       ?.map((id) => {
@@ -109,25 +114,7 @@ export function EasyCascaderInput<T extends EasyCascaderBaseNode>(
       })
       .join(' / ')
     return text
-  }, [data, getNodeLabel, value, displayPath, open, inputValue])
-
-  const displayPlaceholder = useMemo(() => {
-    if (!open) return ''
-    if (value === null) return ''
-
-    const selectedNode = data.find((node) => node.id === selectedId)
-    if (!selectedNode) return ''
-
-    if (!displayPath) return getNodeLabel(selectedNode)
-
-    const text = [...(selectedNode.pathId || []), selectedNode.id]
-      ?.map((id) => {
-        const node = data.find((node) => node.id === id)
-        return node ? getNodeLabel(node) : ''
-      })
-      .join(' / ')
-    return text
-  }, [data, selectedId, getNodeLabel, value, displayPath, open])
+  }, [data, value, getNodeLabel])
 
   const handleClose = (closeOnSuccess: boolean) => {
     setAnchorEl(null)

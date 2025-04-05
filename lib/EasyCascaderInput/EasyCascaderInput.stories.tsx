@@ -8,10 +8,9 @@ import { EasyCascaderInput, EasyCascaderInputProps } from './EasyCascaderInput'
 const meta = {
   title: 'EasyCascaderInput',
   component: EasyCascaderInput,
-
   decorators: [
     (StoryBase) => (
-      <div style={{ height: 250 }}>
+      <div style={{ height: 200 }}>
         <StoryBase />
       </div>
     ),
@@ -24,7 +23,6 @@ const meta = {
     disabled: false,
     helperText: '',
     label: '',
-    displayPath: false,
   },
   argTypes: {
     data: {
@@ -103,6 +101,9 @@ const Template = (args: EasyCascaderInputProps<MockShape>) => {
       {...args}
       value={value}
       onChange={onChange}
+      sx={{
+        width: 400,
+      }}
     />
   )
 }
@@ -111,17 +112,6 @@ export const Default: Story = {
   render: (args) => <Template {...args} />,
 }
 
-export const DisplayPath: Story = {
-  render: (args) => <Template {...args} />,
-  args: {
-    label: 'label',
-    helperText: 'helper text',
-    displayPath: true,
-    sx: {
-      width: 400,
-    },
-  },
-}
 export const Adornment: Story = {
   render: (args) => <Template {...args} />,
   args: {

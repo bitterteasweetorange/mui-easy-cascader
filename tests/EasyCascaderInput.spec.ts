@@ -6,7 +6,7 @@ test('initial value', async ({ page }) => {
   await page.goto(path + 'default')
 
   const locator = page.locator('input')
-  await expect(locator).toHaveValue('children-1')
+  await expect(locator).toHaveValue('parent-0 / children-1')
 })
 
 test('initial select', async ({ page }) => {
@@ -32,7 +32,9 @@ test('leaf select', async ({ page }) => {
   await page.getByText('children-0').click()
   await page.getByText('depth2').click()
 
-  expect(page.locator('input')).toHaveValue('depth2')
+  await expect(page.locator('input')).toHaveValue(
+    'parent-0 / children-0 / depth2',
+  )
 })
 
 test('clear value', async ({ page }) => {
@@ -41,7 +43,7 @@ test('clear value', async ({ page }) => {
   await page.locator('input').hover()
   await page.getByRole('button').click()
 
-  expect(page.locator('input')).toHaveValue('')
+  await expect(page.locator('input')).toHaveValue('')
 })
 
 test('adornment', async ({ page }) => {
@@ -52,13 +54,6 @@ test('adornment', async ({ page }) => {
   await expect(starIcon).toHaveCount(3)
   const chip = page.locator('.MuiChip-label')
   await expect(chip).toHaveCount(1)
-})
-
-test('display path', async ({ page }) => {
-  await page.goto(path + 'display-path')
-
-  const locator = page.locator('input')
-  await expect(locator).toHaveValue('parent-0 / children-1')
 })
 
 const hightlightBackgroundColor = 'rgb(253, 231, 155)'
@@ -92,5 +87,5 @@ test('search 0', async ({ page }) => {
   // select
   await page.getByText('depth2').click()
 
-  await expect(input).toHaveValue('depth2')
+  expect(page.locator('input')).toHaveValue('parent-0 / children-0 / depth2')
 })

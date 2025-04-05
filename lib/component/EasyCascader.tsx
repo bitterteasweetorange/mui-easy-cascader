@@ -104,9 +104,6 @@ export function EasyCascader<T extends EasyCascaderBaseNode>(
                         alignItems: 'center',
                         gap: 1,
                         flexGrow: 1,
-                        '& span': {
-                          fontWeight: nodeSelected ? 'bold' : 'normal',
-                        },
                       }}
                     >
                       {startAdornment?.(node, depth, isLeaf)}
