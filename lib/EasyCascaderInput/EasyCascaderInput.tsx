@@ -145,12 +145,13 @@ export function EasyCascaderInput<T extends EasyCascaderBaseNode>(
         sx={{
           ...sx,
           ':hover .MuiButtonBase-root': {
-            visibility: value ? 'visible' : 'hidden',
+            visibility: value && !disabled ? 'visible' : 'hidden',
           },
         }}
         slotProps={{
           input: {
             onClick: (e) => {
+              if (disabled) return
               setAnchorEl(e.currentTarget)
             },
             endAdornment: (
