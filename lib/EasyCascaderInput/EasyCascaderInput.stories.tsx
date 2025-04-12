@@ -23,6 +23,7 @@ const meta = {
     disabled: false,
     helperText: '',
     label: '',
+    autoFocus: false,
   },
   argTypes: {
     data: {

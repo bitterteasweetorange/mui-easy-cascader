@@ -40,6 +40,10 @@ export type EasyCascaderInputProps<T extends EasyCascaderBaseNode> =
      */
     disabled?: boolean
     /**
+     * If `true`, the `input` element is focused during the first mount.
+     */
+    autoFocus?: boolean
+    /**
      * selected node, "id" is used to find the node in the data
      */
     value: T | null
@@ -66,6 +70,7 @@ export function EasyCascaderInput<T extends EasyCascaderBaseNode>(
     disabled,
     required,
     helperText,
+    autoFocus,
     sx,
     // common
     ...commonProps
@@ -142,6 +147,7 @@ export function EasyCascaderInput<T extends EasyCascaderBaseNode>(
         onChange={(e) => {
           setInputValue(e.target.value)
         }}
+        autoFocus={autoFocus}
         sx={{
           ...sx,
           ':hover .MuiButtonBase-root': {
