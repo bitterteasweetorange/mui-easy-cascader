@@ -1,13 +1,10 @@
 import { Box, MenuItem, MenuList, Paper, Typography } from '@mui/material'
 import { useMemo } from 'react'
-import type {
-  EasyCascaderBaseNode,
-  EasyCascaderCommonProps,
-  EasyId,
-} from '../utils/types'
+import { isLeafNode } from '../utils/isLeafNode'
+import type { EasyCommonProps, EasyId, EasyNode } from '../utils/types'
 import { EasyHighlight } from './EasyHighlight'
 
-export type EasyFlatListProps<T extends EasyCascaderBaseNode> = {
+export type EasyFlatListProps<T extends EasyNode> = {
   /**
    * filter data and highlight the keyword
    */
@@ -24,11 +21,9 @@ export type EasyFlatListProps<T extends EasyCascaderBaseNode> = {
    * if true, will focus the selected item to enable keyboard navigation
    */
   autoFocusItem?: boolean
-} & EasyCascaderCommonProps<T>
+} & EasyCommonProps<T>
 
-export function EasyFlatList<T extends EasyCascaderBaseNode>(
-  props: EasyFlatListProps<T>,
-) {
+export function EasyFlatList<T extends EasyNode>(props: EasyFlatListProps<T>) {
   const {
     // common props
     data,
@@ -81,13 +76,13 @@ export function EasyFlatList<T extends EasyCascaderBaseNode>(
                       flexGrow: 1,
                     }}
                   >
-                    {startAdornment?.(currentNode, depth, isLeaf)}
+                    {startAdornment?.(currentNode, depth)}
                     <EasyHighlight
                       text={text}
                       search={search}
                       focused={leafNode.id === selectedId}
                     ></EasyHighlight>
-                    {endAdornment?.(currentNode, depth, isLeaf)}
+                    {endAdornment?.(currentNode, depth)}
                     {!isLeaf && (
                       <Typography
                         component="div"
@@ -107,7 +102,7 @@ export function EasyFlatList<T extends EasyCascaderBaseNode>(
   )
 }
 
-function filterKeywordLeafNodes<T extends EasyCascaderBaseNode>(
+function filterKeywordLeafNodes<T extends EasyNode>(
   nodes: T[],
   getNodeLabel: (node: T) => string,
   search: string,
@@ -145,13 +140,7 @@ function filterKeywordLeafNodes<T extends EasyCascaderBaseNode>(
   return res
 }
 
-export function isLeafNode<T extends EasyCascaderBaseNode>(
-  node: T,
-): node is T & { childrenId: undefined } {
-  return !node.childrenId || node.childrenId.length === 0
-}
-
-export function findLeafNodesFromRoot<T extends EasyCascaderBaseNode>(
+export function findLeafNodesFromRoot<T extends EasyNode>(
   nodes: T[],
   rootId: EasyId,
 ): {

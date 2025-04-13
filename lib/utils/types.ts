@@ -5,13 +5,14 @@ import type { ReactNode } from 'react'
  */
 export type EasyId = number | string
 
-export type EasyCascaderBaseNode = {
+// for cascader & tree
+export type EasyNode = {
   id: EasyId
   childrenId?: EasyId[]
   pathId?: EasyId[]
 }
 
-export type EasyCascaderCommonProps<T> = {
+export type EasyCommonProps<T extends EasyNode> = {
   /**
    * all nodes data
    */
@@ -26,12 +27,12 @@ export type EasyCascaderCommonProps<T> = {
    * depth starts from 0
    * isLeaf is true if the node is a leaf node
    */
-  startAdornment?: (node: T, depth: number, isLeaf: boolean) => ReactNode
+  startAdornment?: (node: T, depth: number) => ReactNode
   /**
    * end input adornment for the list
    * @param:
    * depth starts from 0
    * isLeaf is true if the node is a leaf node
    */
-  endAdornment?: (node: T, depth: number, isLeaf: boolean) => ReactNode
+  endAdornment?: (node: T, depth: number) => ReactNode
 }

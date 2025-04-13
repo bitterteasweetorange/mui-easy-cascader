@@ -2,6 +2,7 @@ import StarOutline from '@mui/icons-material/StarOutline'
 import { Chip } from '@mui/material'
 import type { Meta, StoryObj } from '@storybook/react'
 import React from 'react'
+import { isLeafNode } from '../utils'
 import { MockShape, mockNodes } from '../utils/mock'
 import { EasyCascaderInput, EasyCascaderInputProps } from './EasyCascaderInput'
 
@@ -116,9 +117,9 @@ export const Default: Story = {
 export const Adornment: Story = {
   render: (args) => <Template {...args} />,
   args: {
-    endAdornment: (node, _, isLeaf) => {
+    endAdornment: (node, _) => {
       if (!node.age) return null
-      if (!isLeaf) return null
+      if (!isLeafNode(node)) return null
       return (
         <Chip
           color="success"

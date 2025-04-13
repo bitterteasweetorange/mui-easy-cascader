@@ -2,6 +2,7 @@ import { StarOutline } from '@mui/icons-material'
 import { Chip } from '@mui/material'
 import type { Meta, StoryObj } from '@storybook/react'
 import React from 'react'
+import { isLeafNode } from '../utils'
 import { type MockShape, mockNodes } from '../utils/mock'
 import { EasyId } from '../utils/types'
 import { EasyCascader, EasyCascaderProps } from './EasyCascader'
@@ -77,9 +78,9 @@ export const Default: Story = {
             setSelectedId(node?.id ?? null)
           }}
           autoFocusItem
-          endAdornment={(node, _, isLeaf) => {
+          endAdornment={(node, _) => {
             if (!node.age) return null
-            if (!isLeaf) return null
+            if (!isLeafNode(node)) return null
             return (
               <Chip
                 color="success"

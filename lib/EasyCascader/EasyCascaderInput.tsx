@@ -8,53 +8,49 @@ import {
 } from '@mui/material'
 import { useMemo, useState, type ReactNode } from 'react'
 import { useDebounce } from 'use-debounce'
-import { EasyFlatList, isLeafNode } from '../component/EasyFlatList'
+import { EasyFlatList } from '../component/EasyFlatList'
 import { EasyPopper } from '../component/EasyPopper'
-import type {
-  EasyCascaderBaseNode,
-  EasyCascaderCommonProps,
-  EasyId,
-} from '../utils/types'
+import { isLeafNode } from '../utils/isLeafNode'
+import type { EasyCommonProps, EasyId, EasyNode } from '../utils/types'
 import { EasyCascader } from './EasyCascader'
 
-export type EasyCascaderInputProps<T extends EasyCascaderBaseNode> =
-  EasyCascaderCommonProps<T> & {
-    /**
-     * a text or an element to be used in an enclosing label element
-     */
-    label?: ReactNode
-    /**
-     * if true, the helper text will be displayed in an error state
-     */
-    error?: boolean
-    /**
-     * text or an element to be used as a helper text
-     */
-    helperText?: ReactNode
-    /**
-     * if true, the helper text should use required classes key.
-     */
-    required?: boolean
-    /**
-     * if true, the helper text should be displayed in a disabled state.
-     */
-    disabled?: boolean
-    /**
-     * If `true`, the `input` element is focused during the first mount.
-     */
-    autoFocus?: boolean
-    /**
-     * selected node, "id" is used to find the node in the data
-     */
-    value: T | null
-    /**
-     * callback fired when the value changes
-     */
-    onChange: (value: T | null) => void
-    sx?: SxProps
-  }
+export type EasyCascaderInputProps<T extends EasyNode> = EasyCommonProps<T> & {
+  /**
+   * a text or an element to be used in an enclosing label element
+   */
+  label?: ReactNode
+  /**
+   * if true, the helper text will be displayed in an error state
+   */
+  error?: boolean
+  /**
+   * text or an element to be used as a helper text
+   */
+  helperText?: ReactNode
+  /**
+   * if true, the helper text should use required classes key.
+   */
+  required?: boolean
+  /**
+   * if true, the helper text should be displayed in a disabled state.
+   */
+  disabled?: boolean
+  sx?: SxProps
+  /**
+   * If `true`, the `input` element is focused during the first mount.
+   */
+  autoFocus?: boolean
+  /**
+   * selected node, "id" is used to find the node in the data
+   */
+  value: T | null
+  /**
+   * callback fired when the value changes
+   */
+  onChange: (value: T | null) => void
+}
 
-export function EasyCascaderInput<T extends EasyCascaderBaseNode>(
+export function EasyCascaderInput<T extends EasyNode>(
   props: EasyCascaderInputProps<T>,
 ) {
   const [inputValue, setInputValue] = useState<string>('')

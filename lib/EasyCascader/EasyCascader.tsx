@@ -8,32 +8,26 @@ import {
   type MenuListOwnProps,
 } from '@mui/material'
 import { useMemo } from 'react'
-import { isLeafNode } from '../component'
-import type {
-  EasyCascaderBaseNode,
-  EasyCascaderCommonProps,
-  EasyId,
-} from '../utils/types'
+import { getRootIds } from '../utils'
+import { isLeafNode } from '../utils/isLeafNode'
+import type { EasyCommonProps, EasyId, EasyNode } from '../utils/types'
 
-export type EasyCascaderProps<T extends EasyCascaderBaseNode> =
-  EasyCascaderCommonProps<T> & {
-    /**
-     * all nodes can be selected
-     */
-    selectedId: EasyId | null
-    /**
-     * callback when select a node
-     */
-    onSelect: (node: T | null) => void
-    /**
-     * if true, will focus the selected item to enable keyboard navigation
-     */
-    autoFocusItem?: boolean
-  }
+export type EasyCascaderProps<T extends EasyNode> = EasyCommonProps<T> & {
+  /**
+   * all nodes can be selected
+   */
+  selectedId?: EasyId | null
+  /**
+   * callback when select a node
+   */
+  onSelect?: (node: T | null) => void
+  /**
+   * if true, will focus the selected item to enable keyboard navigation
+   */
+  autoFocusItem?: boolean
+}
 
-export function EasyCascader<T extends EasyCascaderBaseNode>(
-  props: EasyCascaderProps<T>,
-) {
+export function EasyCascader<T extends EasyNode>(props: EasyCascaderProps<T>) {
   const {
     // common props
     data,
@@ -58,9 +52,7 @@ export function EasyCascader<T extends EasyCascaderBaseNode>(
     return [...pathId, selectedId]
   }, [selectedId, data])
 
-  const rootIds = data
-    .filter((node) => !node.pathId || node.pathId.length === 0)
-    .map((node) => node.id)
+  const rootIds = getRootIds(data)
 
   return (
     <Box display="flex">
@@ -91,7 +83,6 @@ export function EasyCascader<T extends EasyCascaderBaseNode>(
               >
                 {columnNodes.map((node) => {
                   const nodeSelected = activedId === node.id
-                  const isLeaf = isLeafNode(node)
                   return (
                     <MenuItem
                       key={node.id}
@@ -106,9 +97,9 @@ export function EasyCascader<T extends EasyCascaderBaseNode>(
                         flexGrow: 1,
                       }}
                     >
-                      {startAdornment?.(node, depth, isLeaf)}
+                      {startAdornment?.(node, depth)}
                       <ListItemText>{getNodeLabel(node)}</ListItemText>
-                      {endAdornment?.(node, depth, isLeaf)}
+                      {endAdornment?.(node, depth)}
                       {node.childrenId && node.childrenId.length !== 0 && (
                         <KeyboardArrowRight
                           color={nodeSelected ? 'primary' : 'disabled'}
@@ -128,7 +119,7 @@ export function EasyCascader<T extends EasyCascaderBaseNode>(
 function currentColumnAutoFocusItem(
   selectedId: EasyId | undefined | null,
   autoFocusItem: boolean | undefined,
-  data: EasyCascaderBaseNode[],
+  data: EasyNode[],
 ): MenuListOwnProps['variant'] {
   if (!autoFocusItem) return 'selectedMenu'
 
