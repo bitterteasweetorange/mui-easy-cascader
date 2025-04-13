@@ -8,12 +8,12 @@ import {
   type MenuListOwnProps,
 } from '@mui/material'
 import { useMemo } from 'react'
+import { isLeafNode } from '../component'
 import type {
   EasyCascaderBaseNode,
   EasyCascaderCommonProps,
   EasyId,
 } from '../utils/types'
-import { isLeafNode } from './EasyFlatList'
 
 export type EasyCascaderProps<T extends EasyCascaderBaseNode> =
   EasyCascaderCommonProps<T> & {

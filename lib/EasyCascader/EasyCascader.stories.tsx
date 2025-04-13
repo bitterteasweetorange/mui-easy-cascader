@@ -7,7 +7,7 @@ import { EasyId } from '../utils/types'
 import { EasyCascader, EasyCascaderProps } from './EasyCascader'
 
 const meta = {
-  title: 'Component/EasyCascader',
+  title: 'Cascader/EasyCascader',
   component: EasyCascader,
   args: {
     data: mockNodes,

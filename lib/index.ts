@@ -1,3 +1,3 @@
 export * from './component'
-export * from './EasyCascaderInput'
+export * from './EasyCascader'
 export * from './utils'

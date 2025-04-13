@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 
-const path = '/iframe.html?id=component-easycascader--'
+const path = '/iframe.html?id=cascader-easycascader--'
 
 test('default', async ({ page }) => {
   await page.goto(path + 'default')

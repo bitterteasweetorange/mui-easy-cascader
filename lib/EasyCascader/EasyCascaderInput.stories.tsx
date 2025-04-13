@@ -6,7 +6,7 @@ import { MockShape, mockNodes } from '../utils/mock'
 import { EasyCascaderInput, EasyCascaderInputProps } from './EasyCascaderInput'
 
 const meta = {
-  title: 'EasyCascaderInput',
+  title: 'Cascader/EasyCascaderInput',
   component: EasyCascaderInput,
   decorators: [
     (StoryBase) => (

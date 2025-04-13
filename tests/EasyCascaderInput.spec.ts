@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 
-const path = '/iframe.html?id=easycascaderinput--'
+const path = '/iframe.html?id=cascader-easycascaderinput--'
 
 test('initial value', async ({ page }) => {
   await page.goto(path + 'default')
@@ -87,5 +87,7 @@ test('search 0', async ({ page }) => {
   // select
   await page.getByText('depth2').click()
 
-  expect(page.locator('input')).toHaveValue('parent-0 / children-0 / depth2')
+  await expect(page.locator('input')).toHaveValue(
+    'parent-0 / children-0 / depth2',
+  )
 })

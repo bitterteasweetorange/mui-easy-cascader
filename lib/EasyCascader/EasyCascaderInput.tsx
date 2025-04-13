@@ -8,7 +8,6 @@ import {
 } from '@mui/material'
 import { useMemo, useState, type ReactNode } from 'react'
 import { useDebounce } from 'use-debounce'
-import { EasyCascader } from '../component/EasyCascader'
 import { EasyFlatList, isLeafNode } from '../component/EasyFlatList'
 import { EasyPopper } from '../component/EasyPopper'
 import type {
@@ -16,6 +15,7 @@ import type {
   EasyCascaderCommonProps,
   EasyId,
 } from '../utils/types'
+import { EasyCascader } from './EasyCascader'
 
 export type EasyCascaderInputProps<T extends EasyCascaderBaseNode> =
   EasyCascaderCommonProps<T> & {
