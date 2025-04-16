@@ -3,9 +3,9 @@ import {
   DeleteForeverOutlined,
   EditOutlined,
 } from '@mui/icons-material'
-import { Box, IconButton } from '@mui/material'
+import { Box, IconButton, TextField } from '@mui/material'
 import type { Meta, StoryObj } from '@storybook/react'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { type MockShape, mockNodes } from '../utils/mock'
 import { EasyTree, EasyTreeProps } from './EasyTree'
 import { useEasyTree, UseEasyTreeProps } from './useEasyTree'
@@ -21,7 +21,24 @@ const meta = {
       {<Story />}
     </Box>
   ),
-} satisfies Meta<UseEasyTreeProps<MockShape>>
+  argTypes: {
+    defaultExpandedIds: {
+      description: '',
+      table: {
+        type: {
+          summary: 'string[] | number[]',
+        },
+      },
+    },
+    defaultSelectedId: {
+      table: {
+        type: {
+          summary: 'string | number | null',
+        },
+      },
+    },
+  },
+} satisfies Meta<UseEasyTreeProps>
 
 export default meta
 
@@ -35,39 +52,41 @@ export const Default: Story = {
       selectedId,
       setSelectedId,
       data,
-      getNodeLabel,
-      setFullData,
-      search,
+      setData,
       createNode,
       updateNode,
       deleteNode,
-      fullData,
     } = useEasyTree<MockShape>({
-      getNodeLabel(node) {
-        return node.name
-      },
       defaultSelectedId: 5,
       defaultExpandedIds: [0],
     })
 
     useEffect(() => {
-      setFullData(mockNodes)
+      setData(mockNodes)
     }, [])
 
-    const selectedNode = fullData.find((node) => node.id === selectedId)
+    const selectedNode = data.find((node) => node.id === selectedId)
+    const [search, setSearch] = useState('0')
     return (
       <>
         you select: {selectedNode?.name}
+        <br />
+        <TextField
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value || '')
+          }}
+        />
         <EasyTree<MockShape>
           data={data}
-          getNodeLabel={getNodeLabel}
+          getNodeLabel={(node) => node.name}
           expandedId={expandedId}
           setExpandedId={setExpandedId}
           selectedId={selectedId}
-          setSelectedId={(id) => {
-            setSelectedId(id)
+          onSelect={(node) => {
+            setSelectedId(node?.id ?? null)
           }}
-          selectMode="leafOnly"
+          selectMode="all"
           search={search}
           actionButtons={(node) => (
             <Box>

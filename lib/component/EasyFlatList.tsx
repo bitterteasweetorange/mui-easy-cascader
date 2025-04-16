@@ -1,4 +1,4 @@
-import { Box, MenuItem, MenuList, Paper, Typography } from '@mui/material'
+import { Box, MenuItem, MenuList, Typography } from '@mui/material'
 import { useMemo } from 'react'
 import { isLeafNode } from '../utils/isLeafNode'
 import type { EasyCommonProps, EasyId, EasyNode } from '../utils/types'
@@ -45,64 +45,62 @@ export function EasyFlatList<T extends EasyNode>(props: EasyFlatListProps<T>) {
   }, [data, getNodeLabel, search])
 
   return (
-    <Paper>
-      <MenuList autoFocusItem={autoFocusItem}>
-        {lineNodes.map((leafNode) => (
-          <MenuItem
-            selected={leafNode.id === selectedId}
-            key={leafNode.id}
-            onClick={() => {
-              onSelect?.(leafNode)
+    <MenuList autoFocusItem={autoFocusItem}>
+      {lineNodes.map((leafNode) => (
+        <MenuItem
+          selected={leafNode.id === selectedId}
+          key={leafNode.id}
+          onClick={() => {
+            onSelect?.(leafNode)
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              gap: 1,
             }}
           >
-            <Box
-              sx={{
-                display: 'flex',
-                gap: 1,
-              }}
-            >
-              {[...(leafNode.pathId || []), leafNode.id]?.map((id, depth) => {
-                const currentNode = data.find((x) => x.id === id)
-                const isLeaf = depth === (leafNode.pathId?.length || 0)
-                if (!currentNode) return null
-                const text = getNodeLabel(currentNode)
-                return (
-                  <Box
-                    key={id}
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 1,
-                      flexGrow: 1,
-                    }}
-                  >
-                    {startAdornment?.(currentNode, depth)}
-                    <EasyHighlight
-                      text={text}
-                      search={search}
-                      focused={leafNode.id === selectedId}
-                    ></EasyHighlight>
-                    {endAdornment?.(currentNode, depth)}
-                    {!isLeaf && (
-                      <Typography
-                        component="div"
-                        color="text.disabled"
-                      >
-                        {'/'}
-                      </Typography>
-                    )}
-                  </Box>
-                )
-              })}
-            </Box>
-          </MenuItem>
-        ))}
-      </MenuList>
-    </Paper>
+            {[...(leafNode.pathId || []), leafNode.id]?.map((id, depth) => {
+              const currentNode = data.find((x) => x.id === id)
+              const isLeaf = depth === (leafNode.pathId?.length || 0)
+              if (!currentNode) return null
+              const text = getNodeLabel(currentNode)
+              return (
+                <Box
+                  key={id}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 1,
+                    flexGrow: 1,
+                  }}
+                >
+                  {startAdornment?.(currentNode, depth)}
+                  <EasyHighlight
+                    text={text}
+                    search={search}
+                    focused={leafNode.id === selectedId}
+                  ></EasyHighlight>
+                  {endAdornment?.(currentNode, depth)}
+                  {!isLeaf && (
+                    <Typography
+                      component="div"
+                      color="text.disabled"
+                    >
+                      {'/'}
+                    </Typography>
+                  )}
+                </Box>
+              )
+            })}
+          </Box>
+        </MenuItem>
+      ))}
+    </MenuList>
   )
 }
 
-function filterKeywordLeafNodes<T extends EasyNode>(
+export function filterKeywordLeafNodes<T extends EasyNode>(
   nodes: T[],
   getNodeLabel: (node: T) => string,
   search: string,

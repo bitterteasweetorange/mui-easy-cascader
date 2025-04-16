@@ -1,4 +1,4 @@
-import { DeleteForeverOutlined, StarOutline } from '@mui/icons-material'
+import { EditOutlined, StarOutline } from '@mui/icons-material'
 import { Box, Chip, IconButton } from '@mui/material'
 import type { Meta, StoryObj } from '@storybook/react'
 import React, { useState } from 'react'
@@ -132,8 +132,8 @@ export const SelectLeafOnly: Story = {
           expandedId={expandedId}
           setExpandedId={setExpandedId}
           selectedId={selectedId}
-          setSelectedId={(id) => {
-            setSelectedId(id)
+          onSelect={(node) => {
+            setSelectedId(node?.id ?? null)
           }}
         />
       </>
@@ -161,8 +161,8 @@ export const SelectAllNodes: Story = {
           expandedId={expandedId}
           setExpandedId={setExpandedId}
           selectedId={selectedId}
-          setSelectedId={(id) => {
-            setSelectedId(id)
+          onSelect={(node) => {
+            setSelectedId(node?.id ?? null)
           }}
         />
       </>
@@ -179,8 +179,15 @@ export const ActionButtons: Story = {
         expandedId={expandedId}
         setExpandedId={setExpandedId}
         actionButtons={() => (
-          <IconButton>
-            <DeleteForeverOutlined color="error" />
+          <IconButton
+            size="small"
+            color="error"
+            onClick={(e) => {
+              e.stopPropagation()
+              alert('click action button')
+            }}
+          >
+            <EditOutlined />
           </IconButton>
         )}
       />

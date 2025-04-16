@@ -1,5 +1,6 @@
-import { List } from '@mui/material'
-import type { ReactNode } from 'react'
+import { MenuList } from '@mui/material'
+import { useMemo, type ReactNode } from 'react'
+import { useDebounce } from 'use-debounce'
 import {
   getRootIds,
   type EasyCommonProps,
@@ -18,7 +19,7 @@ export type EasyTreeProps<T extends EasyNode> = EasyCommonProps<T> & {
   /**
    * callback when select a node
    */
-  setSelectedId?: (id: EasyId | null) => void
+  onSelect?: (node: T | null) => void
   /**
    * @default: noSelect
    */
@@ -28,50 +29,70 @@ export type EasyTreeProps<T extends EasyNode> = EasyCommonProps<T> & {
    */
   actionButtons?: (node: T) => ReactNode
   /**
-   * highlight the keyword
+   * filter and highlight the keyword
    */
   search?: string
 }
 
 export function EasyTree<T extends EasyNode>(props: EasyTreeProps<T>) {
-  const { data } = props
-  const rootIds = getRootIds(data)
+  const { setExpandedId, data, search, getNodeLabel } = props
+  const [debouncedSearch] = useDebounce(search, 500)
+
+  const visiableData: T[] = useMemo(() => {
+    if (debouncedSearch === undefined || debouncedSearch === '') return data
+
+    const visiableNodes = filterKeywordNodes(
+      data,
+      getNodeLabel,
+      debouncedSearch,
+    )
+    setExpandedId(visiableNodes.map((node) => node.id))
+    return visiableNodes
+  }, [data, debouncedSearch])
+
+  const rootIds = useMemo(() => {
+    return getRootIds(visiableData)
+  }, [visiableData])
 
   return (
-    <List>
+    <MenuList>
       {rootIds.map((id) => (
         <EasyTreeItem
           key={id}
+          {...props}
           id={id}
           depth={0}
-          {...props}
+          data={visiableData}
         />
       ))}
-    </List>
+    </MenuList>
   )
 }
 
 function filterKeywordNodes<T extends EasyNode>(
-  fullData: T[],
+  data: T[],
   getNodeLabel: (node: T) => string,
-  debouncedSearch: string,
+  search: string,
 ): T[] {
-  const includeKeywordNodes = fullData.filter((node) => {
-    const label = getNodeLabel(node)
-    return label.includes(debouncedSearch)
-  })
+  const includeKeywordNodeIds = data
+    .filter((node) => {
+      const label = getNodeLabel(node)
+      return label.includes(search)
+    })
+    .map((node) => node.id)
 
-  const res: T[] = includeKeywordNodes
+  const res: EasyId[] = includeKeywordNodeIds
 
-  function addParentNode2Result(node: T) {
-    const parent = fullData.find((item) => item.childrenId?.includes(node.id))
-    if (parent && !res.includes(parent)) {
-      res.push(parent)
-      addParentNode2Result(parent)
+  function addParentNodes2Result(id: EasyId) {
+    const parent = data.find((item) => item.childrenId?.includes(id))
+    if (parent && !res.includes(parent.id)) {
+      res.push(parent.id)
+      addParentNodes2Result(parent.id)
     }
   }
-  includeKeywordNodes.forEach((node) => {
-    addParentNode2Result(node)
+
+  includeKeywordNodeIds.forEach((id) => {
+    addParentNodes2Result(id)
   })
-  return res
+  return res.map((id) => data.find((x) => x.id === id)!)
 }

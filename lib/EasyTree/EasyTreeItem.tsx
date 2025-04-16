@@ -3,10 +3,9 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import {
   Box,
   Collapse,
-  ListItem,
-  ListItemButton,
   ListItemIcon,
   ListItemText,
+  MenuItem,
 } from '@mui/material'
 import type { EasyTreeProps } from '.'
 import { EasyHighlight } from '../component/EasyHighlight'
@@ -33,7 +32,7 @@ export function EasyTreeItem<T extends EasyNode>({
     setExpandedId,
     selectMode = 'noSelect',
     selectedId,
-    setSelectedId,
+    onSelect,
     actionButtons: actions,
     search,
   } = treeProps
@@ -54,10 +53,9 @@ export function EasyTreeItem<T extends EasyNode>({
   }
   return (
     <>
-      <ListItem
-        disablePadding
-        secondaryAction={actions?.(node)}
+      <MenuItem
         sx={{
+          paddingLeft: String(depth * 32) + 'px',
           '& button': {
             visibility: 'hidden',
           },
@@ -67,76 +65,71 @@ export function EasyTreeItem<T extends EasyNode>({
             },
           },
         }}
-      >
-        <ListItemButton
-          sx={{
-            paddingLeft: String(depth * 32) + 'px',
-          }}
-          selected={selected}
-          onClick={() => {
-            if (selected) {
-              setSelectedId?.(null)
+        selected={selected}
+        onClick={() => {
+          if (selected) {
+            onSelect?.(null)
+            return
+          }
+          const isLeaf = isLeafNode(node)
+
+          switch (selectMode) {
+            case 'noSelect':
+              if (!isLeaf) {
+                onExpand(id)
+              }
               return
-            }
-            const isLeaf = isLeafNode(node)
 
-            switch (selectMode) {
-              case 'noSelect':
-                if (!isLeaf) {
-                  onExpand(id)
-                }
-                return
+            case 'leafOnly':
+              if (isLeaf) {
+                onSelect?.(node)
+              } else {
+                onExpand(id)
+              }
+              return
 
-              case 'leafOnly':
-                if (isLeaf) {
-                  setSelectedId?.(id)
-                } else {
-                  onExpand(id)
-                }
-                return
+            case 'all':
+              onSelect?.(node)
+              return
 
-              case 'all':
-                setSelectedId?.(id)
-                return
-
-              default:
-                return
-            }
+            default:
+              return
+          }
+        }}
+      >
+        <ListItemIcon
+          onClick={(e) => {
+            e.stopPropagation()
+            onExpand(id)
           }}
         >
-          <ListItemIcon
-            onClick={(e) => {
-              e.stopPropagation()
-              onExpand(id)
-            }}
-          >
-            {isLeafNode(node) ? null : expanded ? (
-              <KeyboardArrowDownIcon color="disabled" />
-            ) : (
-              <KeyboardArrowRight color="disabled" />
-            )}
-          </ListItemIcon>
-          <ListItemText
-            primary={
-              <Box
-                sx={{
-                  display: 'flex',
-                  gap: 1,
-                  alignItems: 'center',
-                }}
-              >
-                {startAdornment?.(node, depth)}
-                <EasyHighlight
-                  focused={selected}
-                  text={getNodeLabel(node)}
-                  search={search}
-                />
-                {endAdornment?.(node, depth)}
-              </Box>
-            }
-          ></ListItemText>
-        </ListItemButton>
-      </ListItem>
+          {isLeafNode(node) ? null : expanded ? (
+            <KeyboardArrowDownIcon color="disabled" />
+          ) : (
+            <KeyboardArrowRight color="disabled" />
+          )}
+        </ListItemIcon>
+        <ListItemText
+          primary={
+            <Box
+              sx={{
+                display: 'flex',
+                gap: 1,
+                alignItems: 'center',
+              }}
+            >
+              {startAdornment?.(node, depth)}
+              <EasyHighlight
+                focused={selected}
+                text={getNodeLabel(node)}
+                search={search}
+              />
+              {endAdornment?.(node, depth)}
+            </Box>
+          }
+        ></ListItemText>
+        {actions?.(node)}
+      </MenuItem>
       <Collapse
         in={expanded}
         timeout="auto"

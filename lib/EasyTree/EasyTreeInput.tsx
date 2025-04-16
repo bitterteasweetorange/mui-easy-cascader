@@ -5,54 +5,20 @@ import {
   Paper,
   TextField,
   useFormControl,
-  type SxProps,
 } from '@mui/material'
-import { useMemo, useState, type ReactNode } from 'react'
+import { useMemo, useState } from 'react'
 import { useDebounce } from 'use-debounce'
 import { EasyFlatList } from '../component/EasyFlatList'
 import { EasyPopper } from '../component/EasyPopper'
+import type { EasyCascaderInputProps } from '../EasyCascader'
 import { isLeafNode } from '../utils/isLeafNode'
-import type { EasyCommonProps, EasyId, EasyNode } from '../utils/types'
-import { EasyCascader } from './EasyCascader'
+import type { EasyId, EasyNode } from '../utils/types'
+import { EasyTree } from './EasyTree'
 
-export type EasyCascaderInputProps<T extends EasyNode> = EasyCommonProps<T> & {
-  /**
-   * a text or an element to be used in an enclosing label element
-   */
-  label?: ReactNode
-  /**
-   * if true, the helper text will be displayed in an error state
-   */
-  error?: boolean
-  /**
-   * text or an element to be used as a helper text
-   */
-  helperText?: ReactNode
-  /**
-   * if true, the helper text should use required classes key.
-   */
-  required?: boolean
-  /**
-   * if true, the helper text should be displayed in a disabled state.
-   */
-  disabled?: boolean
-  sx?: SxProps
-  /**
-   * If `true`, the `input` element is focused during the first mount.
-   */
-  autoFocus?: boolean
-  /**
-   * selected node, "id" is used to find the node in the data
-   */
-  value: T | null
-  /**
-   * callback fired when the value changes
-   */
-  onChange: (value: T | null) => void
-}
+export type EasyTreeInputProps<T extends EasyNode> = EasyCascaderInputProps<T>
 
-export function EasyCascaderInput<T extends EasyNode>(
-  props: EasyCascaderInputProps<T>,
+export function EasyTreeInput<T extends EasyNode>(
+  props: EasyTreeInputProps<T>,
 ) {
   const [inputValue, setInputValue] = useState<string>('')
 
@@ -128,6 +94,8 @@ export function EasyCascaderInput<T extends EasyNode>(
   }
 
   const { focused } = useFormControl() || {}
+  const [expandedId, setExpandedId] = useState<EasyId[]>([0])
+
   return (
     <>
       <TextField
@@ -195,11 +163,16 @@ export function EasyCascaderInput<T extends EasyNode>(
               />
             </Paper>
           ) : (
-            <EasyCascader<T>
-              {...commonProps}
-              selectedId={selectedId}
-              onSelect={onSelect}
-            />
+            <Paper>
+              <EasyTree<T>
+                {...commonProps}
+                selectedId={selectedId}
+                onSelect={onSelect}
+                expandedId={expandedId}
+                setExpandedId={setExpandedId}
+                selectMode="leafOnly"
+              />
+            </Paper>
           )}
         </Box>
       </EasyPopper>
