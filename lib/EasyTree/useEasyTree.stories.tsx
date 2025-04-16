@@ -15,7 +15,7 @@ const meta = {
   decorators: (Story) => (
     <Box
       sx={{
-        width: 500,
+        width: 400,
       }}
     >
       {<Story />}
@@ -66,7 +66,7 @@ export const Default: Story = {
     }, [])
 
     const selectedNode = data.find((node) => node.id === selectedId)
-    const [search, setSearch] = useState('0')
+    const [search, setSearch] = useState('')
     return (
       <>
         you select: {selectedNode?.name}

@@ -1,11 +1,5 @@
 import ClearIcon from '@mui/icons-material/Clear'
-import {
-  Box,
-  IconButton,
-  Paper,
-  TextField,
-  useFormControl,
-} from '@mui/material'
+import { IconButton, Paper, TextField, useFormControl } from '@mui/material'
 import { useMemo, useState } from 'react'
 import { useDebounce } from 'use-debounce'
 import { EasyFlatList } from '../component/EasyFlatList'
@@ -151,30 +145,26 @@ export function EasyTreeInput<T extends EasyNode>(
           handleClose(false)
         }}
       >
-        <Box>
+        <Paper>
           {debouncedSearch ? (
-            <Paper>
-              <EasyFlatList
-                {...commonProps}
-                selectedId={selectedId}
-                onSelect={onSelect}
-                search={debouncedSearch}
-                autoFocusItem
-              />
-            </Paper>
+            <EasyFlatList
+              {...commonProps}
+              selectedId={selectedId}
+              onSelect={onSelect}
+              search={debouncedSearch}
+              autoFocusItem
+            />
           ) : (
-            <Paper>
-              <EasyTree<T>
-                {...commonProps}
-                selectedId={selectedId}
-                onSelect={onSelect}
-                expandedId={expandedId}
-                setExpandedId={setExpandedId}
-                selectMode="leafOnly"
-              />
-            </Paper>
+            <EasyTree<T>
+              {...commonProps}
+              selectedId={selectedId}
+              onSelect={onSelect}
+              expandedId={expandedId}
+              setExpandedId={setExpandedId}
+              selectMode="leafOnly"
+            />
           )}
-        </Box>
+        </Paper>
       </EasyPopper>
     </>
   )

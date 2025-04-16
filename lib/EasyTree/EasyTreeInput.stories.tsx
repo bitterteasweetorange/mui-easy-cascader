@@ -1,5 +1,5 @@
 import StarOutline from '@mui/icons-material/StarOutline'
-import { Chip } from '@mui/material'
+import { Box, Chip } from '@mui/material'
 import type { Meta, StoryObj } from '@storybook/react'
 import React from 'react'
 import { EasyTreeInput, EasyTreeInputProps } from '../EasyTree/EasyTreeInput'
@@ -11,9 +11,14 @@ const meta = {
   component: EasyTreeInput,
   decorators: [
     (StoryBase) => (
-      <div style={{ height: 300 }}>
+      <Box
+        sx={{
+          width: 400,
+          height: 300,
+        }}
+      >
         <StoryBase />
-      </div>
+      </Box>
     ),
   ],
   args: {
@@ -103,9 +108,6 @@ const Template = (args: EasyTreeInputProps<MockShape>) => {
       {...args}
       value={value}
       onChange={onChange}
-      sx={{
-        width: 400,
-      }}
     />
   )
 }

@@ -1,5 +1,5 @@
 import StarOutline from '@mui/icons-material/StarOutline'
-import { Chip } from '@mui/material'
+import { Box, Chip } from '@mui/material'
 import type { Meta, StoryObj } from '@storybook/react'
 import React from 'react'
 import { isLeafNode } from '../utils'
@@ -11,9 +11,14 @@ const meta = {
   component: EasyCascaderInput,
   decorators: [
     (StoryBase) => (
-      <div style={{ height: 200 }}>
+      <Box
+        sx={{
+          width: 400,
+          height: 200,
+        }}
+      >
         <StoryBase />
-      </div>
+      </Box>
     ),
   ],
   args: {
@@ -103,9 +108,6 @@ const Template = (args: EasyCascaderInputProps<MockShape>) => {
       {...args}
       value={value}
       onChange={onChange}
-      sx={{
-        width: 400,
-      }}
     />
   )
 }

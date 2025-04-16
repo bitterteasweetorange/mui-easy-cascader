@@ -1,6 +1,5 @@
 import ClearIcon from '@mui/icons-material/Clear'
 import {
-  Box,
   IconButton,
   Paper,
   TextField,
@@ -183,25 +182,23 @@ export function EasyCascaderInput<T extends EasyNode>(
           handleClose(false)
         }}
       >
-        <Box>
-          {debouncedSearch ? (
-            <Paper>
-              <EasyFlatList
-                {...commonProps}
-                selectedId={selectedId}
-                onSelect={onSelect}
-                search={debouncedSearch}
-                autoFocusItem
-              />
-            </Paper>
-          ) : (
-            <EasyCascader<T>
+        {debouncedSearch ? (
+          <Paper>
+            <EasyFlatList
               {...commonProps}
               selectedId={selectedId}
               onSelect={onSelect}
+              search={debouncedSearch}
+              autoFocusItem
             />
-          )}
-        </Box>
+          </Paper>
+        ) : (
+          <EasyCascader<T>
+            {...commonProps}
+            selectedId={selectedId}
+            onSelect={onSelect}
+          />
+        )}
       </EasyPopper>
     </>
   )

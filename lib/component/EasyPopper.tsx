@@ -1,4 +1,10 @@
-import { Box, ClickAwayListener, Grow, Popper } from '@mui/material'
+import {
+  Box,
+  ClickAwayListener,
+  Grow,
+  Popper,
+  type SxProps,
+} from '@mui/material'
 import { type ReactElement } from 'react'
 
 export type EasyPopperProps = {
@@ -14,10 +20,12 @@ export type EasyPopperProps = {
    * callback fired when the component requests to be closed
    * */
   onClose: () => void
+  sx?: SxProps
 }
 export function EasyPopper({
   children,
-  anchorEl: anchorEl,
+  anchorEl,
+  sx,
   onClose,
 }: EasyPopperProps) {
   const handleClose = () => {
@@ -29,6 +37,7 @@ export function EasyPopper({
   return (
     <Popper
       sx={{
+        ...sx,
         zIndex: 2000,
       }}
       open={open}
