@@ -21,23 +21,6 @@ const meta = {
       {<Story />}
     </Box>
   ),
-  argTypes: {
-    defaultExpandedIds: {
-      description: '',
-      table: {
-        type: {
-          summary: 'string[] | number[]',
-        },
-      },
-    },
-    defaultSelectedId: {
-      table: {
-        type: {
-          summary: 'string | number | null',
-        },
-      },
-    },
-  },
 } satisfies Meta<UseEasyTreeProps>
 
 export default meta
@@ -47,7 +30,7 @@ type Story = StoryObj<EasyTreeProps<MockShape>>
 export const Default: Story = {
   render: () => {
     const {
-      expandedId,
+      expandedIds: expandedId,
       setExpandedId,
       selectedId,
       setSelectedId,

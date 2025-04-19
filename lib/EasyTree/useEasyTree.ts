@@ -8,7 +8,7 @@ export type UseEasyTreeProps = {
   defaultExpandedIds?: EasyId[]
   defaultSelectedId?: EasyId | null
 }
-export type UseEasyTreeReturn<T extends EasyNode> = {
+export type UseEasyTreeReturn<T extends EasyNode = EasyNode> = {
   data: T[]
   selectedId: EasyId | null
   setSelectedId: (id: EasyId | null) => void
@@ -19,7 +19,7 @@ export type UseEasyTreeReturn<T extends EasyNode> = {
   ) => void
   updateNode: (id: EasyId, node: Draft<T>) => void
   deleteNode: (id: EasyId) => void
-  expandedId: EasyId[]
+  expandedIds: EasyId[]
   setExpandedId: (id: EasyId[]) => void
 }
 
@@ -112,7 +112,7 @@ export function useEasyTree<T extends EasyNode>(): UseEasyTreeReturn<T> {
     deleteNode,
     updateNode,
     createNode,
-    expandedId,
+    expandedIds: expandedId,
     setExpandedId,
   }
 }
