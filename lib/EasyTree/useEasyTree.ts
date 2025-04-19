@@ -4,10 +4,6 @@ import { useState } from 'react'
 import { type Updater, useImmer } from 'use-immer'
 import type { EasyId, EasyNode } from '../utils'
 
-export type UseEasyTreeProps = {
-  defaultExpandedIds?: EasyId[]
-  defaultSelectedId?: EasyId | null
-}
 export type UseEasyTreeReturn<T extends EasyNode = EasyNode> = {
   data: T[]
   selectedId: EasyId | null
@@ -19,7 +15,7 @@ export type UseEasyTreeReturn<T extends EasyNode = EasyNode> = {
   ) => void
   updateNode: (id: EasyId, node: Draft<T>) => void
   deleteNode: (id: EasyId) => void
-  expandedIds: EasyId[]
+  expandedId: EasyId[]
   setExpandedId: (id: EasyId[]) => void
 }
 
@@ -112,7 +108,7 @@ export function useEasyTree<T extends EasyNode>(): UseEasyTreeReturn<T> {
     deleteNode,
     updateNode,
     createNode,
-    expandedIds: expandedId,
+    expandedId: expandedId,
     setExpandedId,
   }
 }

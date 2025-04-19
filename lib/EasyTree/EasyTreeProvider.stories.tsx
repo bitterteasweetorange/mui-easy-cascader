@@ -5,7 +5,7 @@ import React, { useEffect } from 'react'
 import { type MockShape, mockNodes } from '../utils/mock'
 import { EasyTree, EasyTreeProps } from './EasyTree'
 import { EasyTreeProvider, useEasyTreeContext } from './EasyTreeProvider'
-import { useEasyTree, UseEasyTreeProps } from './useEasyTree'
+import { useEasyTree } from './useEasyTree'
 
 const meta = {
   title: 'Tree/EasyTreeProvider',
@@ -18,7 +18,7 @@ const meta = {
       {<Story />}
     </Box>
   ),
-} satisfies Meta<UseEasyTreeProps>
+} satisfies Meta
 
 export default meta
 
@@ -28,7 +28,7 @@ export const Default: Story = {
   render: () => {
     const methods = useEasyTree<MockShape>()
     const {
-      expandedIds: expandedId,
+      expandedId,
       setExpandedId,
       selectedId,
       setSelectedId,

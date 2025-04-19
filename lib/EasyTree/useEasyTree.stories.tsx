@@ -8,7 +8,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import React, { useEffect, useState } from 'react'
 import { type MockShape, mockNodes } from '../utils/mock'
 import { EasyTree, EasyTreeProps } from './EasyTree'
-import { useEasyTree, UseEasyTreeProps } from './useEasyTree'
+import { useEasyTree } from './useEasyTree'
 
 const meta = {
   title: 'Tree/useEasyTree',
@@ -21,7 +21,7 @@ const meta = {
       {<Story />}
     </Box>
   ),
-} satisfies Meta<UseEasyTreeProps>
+} satisfies Meta
 
 export default meta
 
@@ -30,7 +30,7 @@ type Story = StoryObj<EasyTreeProps<MockShape>>
 export const Default: Story = {
   render: () => {
     const {
-      expandedIds: expandedId,
+      expandedId,
       setExpandedId,
       selectedId,
       setSelectedId,
