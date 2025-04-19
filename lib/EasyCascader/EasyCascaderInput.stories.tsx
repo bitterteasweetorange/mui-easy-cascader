@@ -13,6 +13,7 @@ const meta = {
     (StoryBase) => (
       <Box
         sx={{
+          display: 'grid',
           width: 400,
           height: 200,
         }}
