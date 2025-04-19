@@ -23,15 +23,12 @@ export type UseEasyTreeReturn<T extends EasyNode> = {
   setExpandedId: (id: EasyId[]) => void
 }
 
-export function useEasyTree<T extends EasyNode>(
-  props: UseEasyTreeProps,
-): UseEasyTreeReturn<T> {
-  const { defaultExpandedIds = [], defaultSelectedId } = props
-  const [selectedId, setSelectedId] = useState<EasyId | null>(
-    defaultSelectedId ?? null,
-  )
+export function useEasyTree<T extends EasyNode>(): UseEasyTreeReturn<T> {
+  const emptyIds: EasyId[] = []
 
-  const [expandedId, setExpandedId] = useState<EasyId[]>(defaultExpandedIds)
+  const [selectedId, setSelectedId] = useState<EasyId | null>(null)
+
+  const [expandedId, setExpandedId] = useState<EasyId[]>(emptyIds)
 
   const emptyData: T[] = []
   const [data, setData] = useImmer<T[]>(emptyData)

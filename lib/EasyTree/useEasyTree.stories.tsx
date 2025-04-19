@@ -56,10 +56,7 @@ export const Default: Story = {
       createNode,
       updateNode,
       deleteNode,
-    } = useEasyTree<MockShape>({
-      defaultSelectedId: 5,
-      defaultExpandedIds: [0],
-    })
+    } = useEasyTree<MockShape>()
 
     useEffect(() => {
       setData(mockNodes)
