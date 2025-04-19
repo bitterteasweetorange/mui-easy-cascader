@@ -1,0 +1,5 @@
+import"./index-C9YoyT3Y.js";import"./EasyFlatList-F0hz_18W.js";import{E as o}from"./EasyHighlight-CeowNmLs.js";import"./EasyPopper-BKiWhjqv.js";import"./react-BNUv-WNW.js";import"./iframe-BCDkIJFI.js";import"./chunk-XP5HYGXS-D5tuasO7.js";import"./index-D4lIrffr.js";import"./entry-preview-docs-Gk-qoF8-.js";import"./index-CFeRKNTJ.js";import"./jsx-runtime-D_zvdyIk.js";import"./isLeafNode-BynM3cPO.js";import"./Grow-DCIzZode.js";import"./useTheme-C1eaTmxe.js";import"./index-BQQLSK9g.js";import"./index-DsJinFGm.js";import"./utils-V0gmEr-R.js";const D={title:"Component/EasyHighlight",component:o,args:{focused:!1,search:"orange",text:"sweet orange"},argTypes:{focused:{table:{defaultValue:{summary:"false"}}}}},r={},e={args:{focused:!0}};r.parameters={...r.parameters,docs:{...r.parameters?.docs,source:{originalSource:"{}",...r.parameters?.docs?.source}}};e.parameters={...e.parameters,docs:{...e.parameters?.docs,source:{originalSource:`{
+  args: {
+    focused: true
+  }
+}`,...e.parameters?.docs?.source}}};const F=["Default","Focus"];export{r as Default,e as Focus,F as __namedExportsOrder,D as default};
